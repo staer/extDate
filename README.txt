@@ -1,0 +1,1 @@
+I need some date formatting methods for JavaScript so am attempting to implement Python's strftime() and strptime() methods.

@@ -63,6 +63,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += extDate.days[this.getDay()][1];
                     break;
                 case 'A': // Full weekday name
+                    outString += extDate.days[this.getDay()][0];
                     break;
                 case 'b': // Abbreviated month name
                     outString += extDate.months[this.getMonth()][1];

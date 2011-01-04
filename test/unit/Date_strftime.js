@@ -56,3 +56,8 @@ test("Abbreviated day of week", function() {
    equals(d3.strftime("1/4/2011 falls on a %a."), 
             "1/4/2011 falls on a Tue.", ""); 
 });
+
+test("Full day of week", function() {
+    equals(d3.strftime("1/4/2011 falls on a %A."),
+            "1/4/2011 falls on a Tuesday.", "");
+});

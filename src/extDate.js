@@ -73,6 +73,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += extDate.months[this.getMonth()][0];
                     break;
                 case 'c': // Locale's appropriate date/time representation
+                    // TODO
                     break;
                 case 'd': // Day of month as decimal number 1-31
                     outString += this.getDate();
@@ -85,26 +86,34 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += hour;
                     break;
                 case 'j': // Day of year as a decimal number 1-366
+                    // TODO
                     break;
                 case 'm': // Month as number 1-12
                     outString += this.getMonth();
                     break;
                 case 'M': // Minute 1-59
+                    // TODO
                     break;
-                case 'p': // AM / PM
+                case 'p': // AM vs PM
+                    // TODO
                     break;
                 case 'S': // Second as number 0-59
+                    // TODO
                     break;
                 case 'U': // Week number of year
+                    // TODO
                     break;
                 case 'w': // Weekday as number 0-6
                     outString += this.getDay();
                     break;
                 case 'W': // Week number of year 0-53
+                    // TODO
                     break;
                 case 'x': // Locale's appropriate date representation
+                    // TODO
                     break;
                 case 'X': // Locale's appropriate time representation
+                    // TODO
                     break;
                 case 'y': // 2 digit year
                     year = this.getFullYear().toString();
@@ -114,6 +123,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += this.getFullYear();
                     break;
                 case 'Z': // Time zone name
+                    // TODO
                     break;
                 case '%': // % sign
                     outString += "%";

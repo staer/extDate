@@ -9,42 +9,42 @@ var d3 = new Date(2011, 0, 4);      // January 4th, 2011 (tuesday)
 
 module("Date.strftime()");			
 test("Test 4 digit year", function() {
-	equals('The year was 1982, it was sweet!', 
-			d.strftime('The year was %Y, it was sweet!'), "");
+	equals(d.strftime('The year was %Y, it was sweet!'), 
+		    'The year was 1982, it was sweet!', "");
 });
 
 test("Test 2 digit year", function() {
-	equals("The year was '82, it was sweet!", 
-			d.strftime("The year was '%y, it was sweet!"), "");
+	equals(d.strftime("The year was '%y, it was sweet!"), 
+			"The year was '82, it was sweet!", "");
 });
 
 test("Multiple directives", function() {
-	equals("The 2 digit version of 1982 is '82!",
-			d.strftime("The 2 digit version of %Y is '%y!"), "");
+	equals(d.strftime("The 2 digit version of %Y is '%y!"),
+			"The 2 digit version of 1982 is '82!", "");
 });
 
 test("Escaped percent sign", function() {
-	equals("Give it 110%!", d.strftime("Give it 110%%!"), "");
+	equals(d.strftime("Give it 110%%!"), "Give it 110%!", "");
 });
 
 test("Short month name", function() {
-    equals("Remember, remember the 5th of Nov.", 
-            d2.strftime("Remember, remember the 5th of %b."), "");
+    equals(d2.strftime("Remember, remember the 5th of %b."), 
+            "Remember, remember the 5th of Nov.", "");
 });
 
 test("Full month name", function() {
-   equals("Remember, remember the 5th of November.",
-            d2.strftime("Remember, remember the 5th of %B."), ""); 
+   equals(d2.strftime("Remember, remember the 5th of %B."),
+            "Remember, remember the 5th of November.", ""); 
 });
 
 test("Day of month", function() {
-    equals("Remember, remember the 5th of November.",
-            d2.strftime("Remember, remember the %dth of November."), "");
+    equals(d2.strftime("Remember, remember the %dth of November."),
+            "Remember, remember the 5th of November.", "");
 });
 
 test("Month number", function() {
-   equals("Remember, remember the 5th of the 10th month.", 
-            d2.strftime("Remember, remember the 5th of the %mth month."), ""); 
+   equals(d2.strftime("Remember, remember the 5th of the %mth month."), 
+            "Remember, remember the 5th of the 10th month.", ""); 
 });
 
 test("Day of week as number", function() {

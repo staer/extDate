@@ -38,3 +38,8 @@ test("Day of month", function() {
     equals("Remember, remember the 5th of November.",
             d2.strftime("Remember, remember the %dth of November."), "");
 });
+
+test("Month number", function() {
+   equals("Remember, remember the 5th of the 10th month.", 
+            d2.strftime("Remember, remember the 5th of the %mth month."), ""); 
+});

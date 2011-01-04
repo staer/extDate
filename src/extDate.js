@@ -58,6 +58,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += extDate.months[this.getMonth()][1];
                     break;
                 case 'B': // Full month name
+                    outString += extDate.months[this.getMonth()][0];
                     break;
                 case 'c': // Locale's appropriate date/time representation
                     break;

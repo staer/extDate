@@ -28,3 +28,8 @@ test("Short month name", function() {
     equals("Remember, remember the 5th of Nov.", 
             d2.strftime("Remember, remember the 5th of %b."), "");
 });
+
+test("Full month name", function() {
+   equals("Remember, remember the 5th of November.",
+            d2.strftime("Remember, remember the 5th of %B."), ""); 
+});

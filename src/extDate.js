@@ -76,7 +76,8 @@ if(typeof Date.prototype.strftime !== 'function') {
                 case 'd': // Day of month as decimal number 1-31
                     outString += this.getDate();
                     break;
-                case 'H': // Hour (24-hour clock) as decimal number 0-23 
+                case 'H': // Hour (24-hour clock) as decimal number 0-23
+                    outString += this.getHours();
                     break;
                 case 'I': // Hour (12-hour clock) as decimal number 1-12
                     break;

@@ -63,6 +63,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                 case 'c': // Locale's appropriate date/time representation
                     break;
                 case 'd': // Day of month as decimal number 01-31
+                    outString += this.getDate();
                     break;
                 case 'H': // Hour (24-hour clock) as decimal number 0-23 
                     break;

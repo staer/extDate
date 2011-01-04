@@ -5,12 +5,12 @@
 // NOTE: Javascript date constructors use 0 based months... silly!
 var d = new Date(1982, 8, 25);      // September 25th, 1982
 var d2 = new Date(1605, 10, 5);      // November 5th, 1605
-var d3 = new Date(2011, 0, 4);      // January 4th, 2011 (tuesday)
+var d3 = new Date(2011, 0, 4, 10, 10, 10);      // January 4th, 2011 (tuesday) @ 10:10:10am
 var d4 = new Date(2011, 9, 1, 13, 15, 30); // January 1st, 2001 @ 1:15:30pm
 
 module("Date");			
 test("Tests for Date.strftime()", function() {
-    expect(12);
+    expect(14);
 	
 	equals(d.strftime('The year was %Y, it was sweet!'), 
 		    'The year was 1982, it was sweet!', "4 digit year");
@@ -46,6 +46,12 @@ test("Tests for Date.strftime()", function() {
             
     equals(d4.strftime("It's %H o' clock!"),
             "It's 13 o' clock!", "Hour on a 24 hour clock");
+            
+    equals(d4.strftime("It's %I o' clock!"),
+            "It's 1 o' clock!", "Hour after noon on a 12 hour clock");
+            
+    equals(d3.strftime("It's %I o' clock!"),
+            "It's 10 o' clock!", "Hour before noon on a 12 hour clcok");
 });
 
 test("Tests for Date.isLeapYear()", function() {

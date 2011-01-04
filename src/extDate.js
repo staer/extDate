@@ -50,6 +50,7 @@ if(typeof Date.prototype.isLeapYear !== 'function') {
 if(typeof Date.prototype.strftime !== 'function') {
     Date.prototype.strftime = function(format) {
         var year = null;        // variable used within the switch statement
+        var hour = null;        // variable used within the switch statement
         var outString = "";     // output string
         var remainingFormat = format;   // format string after being chopped up
         
@@ -80,6 +81,8 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += this.getHours();
                     break;
                 case 'I': // Hour (12-hour clock) as decimal number 1-12
+                    hour = this.getHours() > 12 ? this.getHours()-12 : this.getHours();
+                    outString += hour;
                     break;
                 case 'j': // Day of year as a decimal number 1-366
                     break;

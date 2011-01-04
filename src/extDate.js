@@ -1,17 +1,17 @@
 var extDate = {
     months: {
         0: ['January', 'Jan'],
-        1: 'February',
-        2: 'March',
-        3: 'April',
-        4: 'May',
-        5: 'June',
-        6: 'July',
-        7: 'August',
-        8: 'September',
-        9: 'October',
-        10: 'November',
-        11: 'December'
+        1: ['February', 'Feb'],
+        2: ['March', 'Mar'],
+        3: ['April', 'Apr'],
+        4: ['May', 'May'],
+        5: ['June', 'Jun'],
+        6: ['July', 'Jul'],
+        7: ['August', 'Aug'],
+        8: ['September', 'Sep'],
+        9: ['October', 'Oct'],
+        10: ['November', 'Nov'],
+        11: ['December', 'Dec']
     }
 };
 
@@ -40,8 +40,9 @@ if(typeof Date.prototype.isLeapYear !== 'function') {
 // ===================
 if(typeof Date.prototype.strftime !== 'function') {
     Date.prototype.strftime = function(format) {
-        var outString = "";
-        var remainingFormat = format;
+        var year = null;        // variable used within the switch statement
+        var outString = "";     // output string
+        var remainingFormat = format;   // format string after being chopped up
         
         var index = remainingFormat.indexOf('%');
         while(index !== -1) {
@@ -54,6 +55,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                 case 'A': // Full weekday name
                     break;
                 case 'b': // Abbreviated month name
+                    outString += extDate.months[this.getMonth()][1];
                     break;
                 case 'B': // Full month name
                     break;
@@ -86,7 +88,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                 case 'X': // Locale's appropriate time representation
                     break;
                 case 'y': // 2 digit year
-                    var year = this.getFullYear().toString();
+                    year = this.getFullYear().toString();
                     outString += year.substring(2);
                     break;
                 case 'Y': // 4 digit year

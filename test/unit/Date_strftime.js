@@ -1,8 +1,9 @@
-var d = new Date(1982,9,25);
-
 // =========================
 // = Date.strftime() tests =
 // =========================
+var d = new Date(1982,9,25);
+var d2 = new Date(1605, 10, 5);
+
 module("Date.strftime()");			
 test("Test 4 digit year", function() {
 	equals('The year was 1982, it was sweet!', 
@@ -21,4 +22,9 @@ test("Multiple directives", function() {
 
 test("Escaped percent sign", function() {
 	equals("Give it 110%!", d.strftime("Give it 110%%!"), "");
+});
+
+test("Short month name", function() {
+    equals("Remember, remember the 5th of Nov.", 
+            d2.strftime("Remember, remember the 5th of %b."), "");
 });

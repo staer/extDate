@@ -57,21 +57,46 @@ if(typeof Date.prototype.strftime !== 'function') {
                     break;
                 case 'B': // Full month name
                     break;
-                case 'c':
+                case 'c': // Locale's appropriate date/time representation
                     break;
-                case 'd':
+                case 'd': // Day of month as decimal number 01-31
                     break;
-                case 'Y': // 4 digit year
-                    outString += this.getFullYear();
+                case 'H': // Hour (24-hour clock) as decimal number 0-23 
+                    break;
+                case 'I': // Hour (12-hour clock) as decimal number 1-12
+                    break;
+                case 'j': // Day of year as a decimal number 1-366
+                    break;
+                case 'm': // Month as number 1-12
+                    break;
+                case 'M': // Minute 1-59
+                    break;
+                case 'p': // AM / PM
+                    break;
+                case 'S': // Second as number 0-59
+                    break;
+                case 'U': // Week number of year
+                    break;
+                case 'w': // Weekday as number 0-6
+                    break;
+                case 'W': // Week number of year 0-53
+                    break;
+                case 'x': // Locale's appropriate date representation
+                    break;
+                case 'X': // Locale's appropriate time representation
                     break;
                 case 'y': // 2 digit year
                     var year = this.getFullYear().toString();
                     outString += year.substring(2);
                     break;
+                case 'Y': // 4 digit year
+                    outString += this.getFullYear();
+                    break;
+                case 'Z': // Time zone name
+                    break;
                 case '%': // % sign
                     outString += "%";
                     break;
-                
                 default:
                     break;
             }

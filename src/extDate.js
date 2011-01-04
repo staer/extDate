@@ -83,6 +83,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                 case 'U': // Week number of year
                     break;
                 case 'w': // Weekday as number 0-6
+                    outString += this.getDay();
                     break;
                 case 'W': // Week number of year 0-53
                     break;

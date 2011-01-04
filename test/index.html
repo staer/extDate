@@ -7,10 +7,12 @@
 	<script type="text/javascript" src="../src/extDate.js"></script>
   	<script>
   		$(document).ready(function(){
-  
-			module("Date.strftime()");
-			
-			var d = new Date(1982,9,25);
+  			var d = new Date(1982,9,25);
+
+			// =========================
+			// = Date.strftime() tests =
+			// =========================
+			module("Date.strftime()");			
 			test("Test 4 digit year", function() {
 				equals('The year was 1982, it was sweet!', 
 						d.strftime('The year was %Y, it was sweet!'), "");
@@ -24,6 +26,31 @@
 			test("Multiple directives", function() {
 				equals("The 2 digit version of 1982 is '82!",
 						d.strftime("The 2 digit version of %Y is '%y!"), "");
+			});
+			
+			test("Escaped percent sign", function() {
+				equals("Give it 110%!", d.strftime("Give it 110%%!"), "");
+			});
+			
+			
+			// ===========================
+			// = Date.isLeapYear() tests =
+			// ===========================
+			module("Date.isLeapYear()");
+			test("Testing the year 1600 (leap year)", function() {
+				equals(true, new Date(1600, 1, 1).isLeapYear(), "");
+			});
+			
+			test("Testing the year 1700 (non leap year)", function() {
+				equals(false, new Date(1700, 1, 1).isLeapYear(), "");
+			});
+			
+			test("Testing the year 1984 (leap year)", function() {
+				equals(true, new Date(1984, 1, 1).isLeapYear(), "");
+			});
+			
+			test("Testing the year 2011 (non leap year)", function() {
+				equals(false, new Date(2011, 1, 1).isLeapYear(), "");
 			});
 			
   		});

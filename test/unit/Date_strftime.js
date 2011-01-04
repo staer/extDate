@@ -51,3 +51,8 @@ test("Day of week as number", function() {
    equals(d3.strftime("1/4/2011 is the %wnd day of the week."),
             "1/4/2011 is the 2nd day of the week.", "");
 });
+
+test("Abbreviated day of week", function() {
+   equals(d3.strftime("1/4/2011 falls on a %a."), 
+            "1/4/2011 falls on a Tue.", ""); 
+});

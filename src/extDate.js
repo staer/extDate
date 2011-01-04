@@ -12,6 +12,15 @@ var extDate = {
         9: ['October', 'Oct'],
         10: ['November', 'Nov'],
         11: ['December', 'Dec']
+    },
+    days: {
+        0: ['Sunday', 'Sun'],
+        1: ['Monday', 'Mon'],
+        2: ['Tuesday', 'Tue'],
+        3: ['Wednesday', 'Wed'],
+        4: ['Thursday', 'Thu'],
+        5: ['Friday', 'Fri'],
+        6: ['Saturday', 'Sat']
     }
 };
 
@@ -51,6 +60,7 @@ if(typeof Date.prototype.strftime !== 'function') {
             outString += remainingFormat.substring(0,index);
             switch(directive) {
                 case 'a': // Abbreviated weekday name
+                    outString += extDate.days[this.getDay()][1];
                     break;
                 case 'A': // Full weekday name
                     break;

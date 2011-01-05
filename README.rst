@@ -56,8 +56,8 @@ One of the problems I have with JavaScript Date objects is that is uses zero-bas
 
 Which is somewhat un-inuititive. As such, extDate contains some constants to help make creating dates a bit more clear::
 
-    var d = new Date(2011, extDate.months.JANUARY, 1);		// January 1st
-    var d= new Date(2011, extDate.months.MARCH, 15);		// March 15th
+    var d = new Date(2011, extDate.JANUARY, 1);		// January 1st
+    var d= new Date(2011, extDate.MARCH, 15);		// March 15th
     // etc...
 
 Localization
@@ -78,15 +78,15 @@ Examples
 
 If you wanted to localize the days of the week to Spanish you would do something like the following::
 
-    extDate.days = {
-        ['Domingo', 'Dom'],     // Sunday
-	    ['Lunes', 'Lun'],       // Monday
-	    ['Martes', 'Mar'],      // Tuesday
-	    ['Miercoles', 'Mie'],   // Wednesday
-	    ['Jueves', 'Jue']       // Thursday
-	    ['Viernes', 'Vie'],     // Friday
-	    ['Sabado', 'Sab']       // Saturday        
-    };
+	extDate.days = {
+		['Domingo', 'Dom'],     // Sunday
+		['Lunes', 'Lun'],       // Monday
+		['Martes', 'Mar'],      // Tuesday
+		['Miercoles', 'Mie'],   // Wednesday
+		['Jueves', 'Jue']       // Thursday
+		['Viernes', 'Vie'],     // Friday
+		['Sabado', 'Sab']       // Saturday        
+	};
 
 To change the localized date string output you would do the following::
  

@@ -10,7 +10,7 @@ var d4 = new Date(2011, 9, 1, 13, 15, 30); // January 1st, 2001 @ 1:15:30pm
 
 module("Date");			
 test("Tests for Date.strftime()", function() {
-    expect(17);
+    expect(18);
 	
 	equals(d.strftime('The year was %Y, it was sweet!'), 
 		    'The year was 1982, it was sweet!', "4 digit year");
@@ -60,7 +60,10 @@ test("Tests for Date.strftime()", function() {
             "About 30 seconds have elapsed since the minute.", "Seconds past the minute");
             
     equals(d2.strftime("Guy Fawkes Night started on %x!"),
-            "Guy Fawkes Night started on 11/5/05!", "Local specific date");
+            "Guy Fawkes Night started on 11/5/05!", "Localized date string");
+            
+    equals(d4.strftime("The time is %X!"),
+            "The time is 13:15:30!", "Localized time string");
 });
 
 test("Tests for Date.isLeapYear()", function() {

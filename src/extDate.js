@@ -118,7 +118,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += this.strftime(extDate.local['x']);
                     break;
                 case 'X': // Locale's appropriate time representation
-                    // TODO
+                    outString += this.strftime(extDate.local['X']);
                     break;
                 case 'y': // 2 digit year
                     year = this.getFullYear().toString();

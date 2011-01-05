@@ -5,7 +5,9 @@ extDate is a set of extensions to the JavaScript Date object adding in some miss
 
 * Date.isLeapYear(): check to see if the date occurs on a leap year
 * Date.strftime(): Output the date in a variety of formats (similar to Python strftime)
-* Coming soon: A String.strptime(): Parse a string into a valid Date object
+* A String.strptime(): Parse a string into a valid Date object (COMING SOON)
+* Helper constants to make creating new Date objects easier
+* Easy localization: Easily make the module work in languages other than English
 
 Installation
 ============

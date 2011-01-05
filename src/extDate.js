@@ -25,7 +25,7 @@ var extDate = {
     local: {
         'x': '%m/%d/%y',
         'X': '%H:%M:%S',
-        'c': ''
+        'c': '%a %b %d %H:%M:%S %Y'
     }
 };
 
@@ -78,7 +78,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += extDate.months[this.getMonth()][0];
                     break;
                 case 'c': // Locale's appropriate date/time representation
-                    // TODO
+                    outString += this.strftime(extDate.local['c']);
                     break;
                 case 'd': // Day of month as decimal number 1-31
                     outString += this.getDate();

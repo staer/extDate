@@ -21,6 +21,11 @@ var extDate = {
         4: ['Thursday', 'Thu'],
         5: ['Friday', 'Fri'],
         6: ['Saturday', 'Sat']
+    },
+    local: {
+        'x': '%m/%d/%y',
+        'X': '%H:%M:%S',
+        'c': ''
     }
 };
 
@@ -89,7 +94,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     // TODO
                     break;
                 case 'm': // Month as number 1-12
-                    outString += this.getMonth();
+                    outString += this.getMonth() + 1;
                     break;
                 case 'M': // Minute 0-59
                     outString += this.getMinutes();
@@ -110,7 +115,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     // TODO
                     break;
                 case 'x': // Locale's appropriate date representation
-                    // TODO
+                    outString += this.strftime(extDate.local['x']);
                     break;
                 case 'X': // Locale's appropriate time representation
                     // TODO

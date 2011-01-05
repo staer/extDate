@@ -63,7 +63,37 @@ Which is somewhat un-inuititive. As such, extDate contains some constants to hel
 Localization
 ============
 
-It is very easy to localize extDate to different languages, more will be coming soon.
+In some cases the format strings used in strftime() will output the days of the week or month in long or abbreviated format like "Monday" or "Sep". By default extDate will use English days and months by default, but changing the settings for different output is very easy.
+
+There is an 'extDate' object which contains several items which can be overridden to provide your own localized content, the available items are:
+
+* days - An object with keys for each day of the week (Sunday=0 Saturday=6). The values for each key are an array containing ['Long name', 'Short name']
+
+* months - An object with keys for each month (January=0 to December=11). The values for each key are an arrow containing ['Long name', 'Short name', Days in month (non leap year)]
+
+* local - These are the format strings used to display date and time strings formatted to a specific locale. They are keyed by the directive letter 'x', 'X', 'c', etc. and the values are a format string i.e. "%m/%d/%Y" for the US localized date string.
+
+Examples
+--------
+
+If you wanted to localize the days of the week to Spanish you would do something like the following::
+
+    extDate.days = {
+		['Domingo', 'Dom'],     // Sunday
+	    ['Lunes', 'Lun'],       // Monday
+	    ['Martes', 'Mar'],      // Tuesday
+	    ['Miercoles', 'Mie'],   // Wednesday
+	    ['Jueves', 'Jue']       // Thursday
+	    ['Viernes', 'Vie'],     // Friday
+	    ['Sabado', 'Sab']       // Saturday        
+    };
+
+To change the localized date string output you would do the following::
+ 
+    var d = new Date(2011, extDate.JANUARY, 5);
+	d.strftime("%x");							// Outputs "1/5/2011"
+    extDate.local['x'] = "%A %B %d, %Y";		// Changes the localization of %x
+    d.strftime("%x");							// Outputs "Wednesday January 5, 2011"       
 
 
 

@@ -4,10 +4,13 @@
  * dictionary. For instance convert the days of the week to be localized into 
  * Spanish,one only needs to update the "days" key as such:
  *      extDate.days = {
-            ['Domingo', 'abbr. here...'],       // Sunday
-            ['Lunes', 'abbr. here...'],         // Monday
-            ['Martes', 'abbr. here...'],        // Tuesday
-            ...
+            ['Domingo', 'Dom'],     // Sunday
+            ['Lunes', 'Lun'],       // Monday
+            ['Martes', 'Mar'],      // Tuesday
+            ['Miercoles', 'Mie'],   // Wednesday
+            ['Jueves', 'Jue']       // Thursday
+            ['Viernes', 'Vie'],     // Friday
+            ['Sabado', 'Sab']       // Saturday        
         };
  */
 var extDate = {

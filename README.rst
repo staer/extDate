@@ -16,7 +16,7 @@ Usage
 =====
 
 Date.isLeapYear()
-*****************
+-----------------
 
 This method returns true/false if the date occurs on a leap year::
 
@@ -24,7 +24,7 @@ This method returns true/false if the date occurs on a leap year::
     d.isLeapYear();				  // Returns false
 
 Date.strftime(format)
-***************
+---------------------
 
 This method returns a date string based on the format string passed in::
 
@@ -36,7 +36,7 @@ The format strings and directives that can be used are roughly the same as those
 More information coming soon...
 
 String.strptime(format)
-***********************
+-----------------------
 
 This method parses on a string based on the format parameter and returns a Date object::
 
@@ -46,7 +46,7 @@ This method parses on a string based on the format parameter and returns a Date 
 More information coming soon....
 
 Helpers
-*******
+-------
 
 One of the problems I have with JavaScript Date objects is that is uses zero-based months. For instance, January is the 0th month instead of the 1st. For this reason when creating new Date objects you need to do something like::
     

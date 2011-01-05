@@ -1,7 +1,7 @@
 About
 =====
 
-extDate is a set of extensions to the JavaScript Date object adding in some missing functionality. Features include:
+extDate is a set of extensions regarding the JavaScript Date object, adding in some missing functionality. Features include:
 
 * Date.isLeapYear(): check to see if the date occurs on a leap year
 * Date.strftime(): Output the date in a variety of formats (similar to Python strftime)
@@ -57,8 +57,8 @@ One of the problems I have with JavaScript Date objects is that is uses zero-bas
 Which is somewhat un-inuititive. As such, extDate contains some constants to help make creating dates a bit more clear::
 
     var d = new Date(2011, extDate.months.JANUARY, 1);		// January 1st
-	var d= new Date(2011, extDate.months.MARCH, 15);		// March 15th
-	// etc...
+    var d= new Date(2011, extDate.months.MARCH, 15);		// March 15th
+    // etc...
 
 Localization
 ============

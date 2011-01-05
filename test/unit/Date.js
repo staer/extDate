@@ -10,7 +10,7 @@ var d4 = new Date(2011, 9, 1, 13, 15, 30); // January 1st, 2001 @ 1:15:30pm
 
 module("Date");			
 test("Tests for Date.strftime()", function() {
-    expect(15);
+    expect(16);
 	
 	equals(d.strftime('The year was %Y, it was sweet!'), 
 		    'The year was 1982, it was sweet!', "4 digit year");
@@ -55,6 +55,9 @@ test("Tests for Date.strftime()", function() {
             
     equals(d4.strftime("About %M minutes have elapsed since the hour."),
             "About 15 minutes have elapsed since the hour.", "Minutes past the hour");
+    
+    equals(d4.strftime("About %S seconds have elapsed since the minute."),
+            "About 30 seconds have elapsed since the minute.", "Seconds past the minute");
 });
 
 test("Tests for Date.isLeapYear()", function() {

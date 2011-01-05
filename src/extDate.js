@@ -91,14 +91,14 @@ if(typeof Date.prototype.strftime !== 'function') {
                 case 'm': // Month as number 1-12
                     outString += this.getMonth();
                     break;
-                case 'M': // Minute 1-59
+                case 'M': // Minute 0-59
                     outString += this.getMinutes();
                     break;
                 case 'p': // AM vs PM
                     // TODO
                     break;
                 case 'S': // Second as number 0-59
-                    // TODO
+                    outString += this.getSeconds();
                     break;
                 case 'U': // Week number of year
                     // TODO

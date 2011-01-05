@@ -1,5 +1,19 @@
+/*
+ * To localize / override any of the US specific values used in extDate all
+ * that needs to be done is to override any/all of the items in the extDate
+ * dictionary. For instance convert the days of the week to be localized into 
+ * Spanish,one only needs to update the "days" key as such:
+ *      extDate.days = {
+            ['Domingo', 'abbr. here...'],       // sunday
+            ['Lunes', 'abbr. here...'],         // monday
+            ['Martes', 'abbr. here...'],        // tuesday
+            ...
+        };
+ */
 var extDate = {
     months: {
+        // Information about each month keyed by month number:
+        // Full name | Abbreviated Name | Days in month (non-leap year)
         0: ['January', 'Jan', 31],
         1: ['February', 'Feb', 28],
         2: ['March', 'Mar', 31],
@@ -11,9 +25,30 @@ var extDate = {
         8: ['September', 'Sep', 30],
         9: ['October', 'Oct', 31],
         10: ['November', 'Nov', 30],
-        11: ['December', 'Dec', 31]
+        11: ['December', 'Dec', 31],
+        
+        // The named months of the year, makes creating dates easier since
+        // JavaScript dates are zero-based which is just weird...
+        // i.e. 
+        //      var d = new Date(2011, extDate.months.JANUARY, 4);
+        // instead of:
+        //      var d = new Date(2011, 0, 4);   <--- note january is month zero!
+        JANUARY: 0,
+        FEBRUARY: 1,
+        MARCH: 2,
+        APRIL: 3,
+        MAY: 4,
+        JUNE: 5,
+        JULY: 6,
+        AUGUST: 7,
+        SEPTEMBER: 8,
+        OCTOBER: 9,
+        NOVEMBER: 10,
+        DECEMBER: 11
     },
     days: {
+        // Information about each day of the week keyed by day number
+        // Full name | Abbreviated Name
         0: ['Sunday', 'Sun'],
         1: ['Monday', 'Mon'],
         2: ['Tuesday', 'Tue'],
@@ -22,10 +57,12 @@ var extDate = {
         5: ['Friday', 'Fri'],
         6: ['Saturday', 'Sat']
     },
+    // Localized specific directives, these call strftime recursively to create
+    // their result so the value is just a format string to use
     local: {
-        'x': '%m/%d/%y',
-        'X': '%H:%M:%S',
-        'c': '%a %b %d %H:%M:%S %Y'
+        'x': '%m/%d/%y',                // Localized date display
+        'X': '%H:%M:%S',                // Localized time display
+        'c': '%a %b %d %H:%M:%S %Y'     // Localized date/time display
     }
 };
 
@@ -121,13 +158,13 @@ if(typeof Date.prototype.strftime !== 'function') {
                 case 'S': // Second as number 0-59
                     outString += this.getSeconds();
                     break;
-                case 'U': // Week number of year
+                case 'U': // Week number of year starting on sunday
                     // TODO
                     break;
                 case 'w': // Weekday as number 0-6
                     outString += this.getDay();
                     break;
-                case 'W': // Week number of year 0-53
+                case 'W': // Week number of year 0-53 starting on monday
                     // TODO
                     break;
                 case 'x': // Locale's appropriate date representation

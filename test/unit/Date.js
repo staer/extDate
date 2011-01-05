@@ -3,11 +3,11 @@
 // =========================
 
 // NOTE: Javascript date constructors use 0 based months... silly!
-var d = new Date(1982, 8, 25);                  // September 25th, 1982
-var d2 = new Date(1605, 10, 5);                 // November 5th, 1605
-var d3 = new Date(2011, 0, 4, 10, 10, 10);      // January 4th, 2011 (tuesday) @ 10:10:10am
-var d4 = new Date(2011, 9, 1, 13, 15, 30);      // Oct 1st, 2011 @ 1:15:30pm
-var d5 = new Date(1984, 2, 15);                 // March 15th, 1984 (leap year)
+var d = new Date(1982, extDate.months.SEPTEMBER, 25);                  // September 25th, 1982
+var d2 = new Date(1605, extDate.months.NOVEMBER, 5);                 // November 5th, 1605
+var d3 = new Date(2011, extDate.months.JANUARY, 4, 10, 10, 10);      // January 4th, 2011 (tuesday) @ 10:10:10am
+var d4 = new Date(2011, extDate.months.OCTOBER, 1, 13, 15, 30);      // Oct 1st, 2011 @ 1:15:30pm
+var d5 = new Date(1984, extDate.months.MARCH, 15);                 // March 15th, 1984 (leap year)
 
 module("Date");			
 test("Tests for Date.strftime()", function() {
@@ -85,11 +85,11 @@ test("Tests for Date.strftime()", function() {
 test("Tests for Date.isLeapYear()", function() {
     expect(4);
 	
-	equals(new Date(1600, 0, 1).isLeapYear(), true, "1600 (leap year)");
+	equals(new Date(1600, extDate.months.JANUARY, 1).isLeapYear(), true, "1600 (leap year)");
 	
-	equals(new Date(1700, 0, 1).isLeapYear(), false, "1700 (non leap year)");
+	equals(new Date(1700, extDate.months.JANUARY, 1).isLeapYear(), false, "1700 (non leap year)");
 	
-	equals(new Date(1984, 0, 1).isLeapYear(), true, "1984 (leap year)");
+	equals(new Date(1984, extDate.months.JANUARY, 1).isLeapYear(), true, "1984 (leap year)");
 	
-	equals(new Date(2011, 0, 1).isLeapYear(), false, "2011 (non leap year)");
+	equals(new Date(2011, extDate.months.JANUARY, 1).isLeapYear(), false, "2011 (non leap year)");
 });

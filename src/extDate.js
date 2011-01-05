@@ -92,7 +92,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += this.getMonth();
                     break;
                 case 'M': // Minute 1-59
-                    // TODO
+                    outString += this.getMinutes();
                     break;
                 case 'p': // AM vs PM
                     // TODO

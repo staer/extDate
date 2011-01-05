@@ -1,17 +1,17 @@
 var extDate = {
     months: {
-        0: ['January', 'Jan'],
-        1: ['February', 'Feb'],
-        2: ['March', 'Mar'],
-        3: ['April', 'Apr'],
-        4: ['May', 'May'],
-        5: ['June', 'Jun'],
-        6: ['July', 'Jul'],
-        7: ['August', 'Aug'],
-        8: ['September', 'Sep'],
-        9: ['October', 'Oct'],
-        10: ['November', 'Nov'],
-        11: ['December', 'Dec']
+        0: ['January', 'Jan', 31],
+        1: ['February', 'Feb', 28],
+        2: ['March', 'Mar', 31],
+        3: ['April', 'Apr', 30],
+        4: ['May', 'May', 31],
+        5: ['June', 'Jun', 30],
+        6: ['July', 'Jul', 31],
+        7: ['August', 'Aug', 31],
+        8: ['September', 'Sep', 30],
+        9: ['October', 'Oct', 31],
+        10: ['November', 'Nov', 30],
+        11: ['December', 'Dec', 31]
     },
     days: {
         0: ['Sunday', 'Sun'],
@@ -55,7 +55,9 @@ if(typeof Date.prototype.isLeapYear !== 'function') {
 if(typeof Date.prototype.strftime !== 'function') {
     Date.prototype.strftime = function(format) {
         var year = null;        // variable used within the switch statement
+        var month = null;       // variable used within the switch statement
         var hour = null;        // variable used within the switch statement
+        var days = null;
         var outString = "";     // output string
         var remainingFormat = format;   // format string after being chopped up
         
@@ -91,7 +93,17 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += hour;
                     break;
                 case 'j': // Day of year as a decimal number 1-366
-                    // TODO
+                    days = 0;
+                    month = this.getMonth();
+                    for(var i=0; i< month; i++) {
+                        days += extDate.months[i][2];
+                        // if it's a leap year and feb, we need to add an extra day
+                        if(this.isLeapYear() && i==1) {
+                            days += 1;
+                        }
+                    }
+                    days += this.getDate();
+                    outString += days;
                     break;
                 case 'm': // Month as number 1-12
                     outString += this.getMonth() + 1;

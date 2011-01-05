@@ -3,14 +3,15 @@
 // =========================
 
 // NOTE: Javascript date constructors use 0 based months... silly!
-var d = new Date(1982, 8, 25);      // September 25th, 1982
-var d2 = new Date(1605, 10, 5);      // November 5th, 1605
+var d = new Date(1982, 8, 25);                  // September 25th, 1982
+var d2 = new Date(1605, 10, 5);                 // November 5th, 1605
 var d3 = new Date(2011, 0, 4, 10, 10, 10);      // January 4th, 2011 (tuesday) @ 10:10:10am
-var d4 = new Date(2011, 9, 1, 13, 15, 30); // Oct 1st, 2001 @ 1:15:30pm
+var d4 = new Date(2011, 9, 1, 13, 15, 30);      // Oct 1st, 2011 @ 1:15:30pm
+var d5 = new Date(1984, 2, 15);                 // March 15th, 1984 (leap year)
 
 module("Date");			
 test("Tests for Date.strftime()", function() {
-    expect(19);
+    expect(21);
 	
 	equals(d.strftime('The year was %Y, it was sweet!'), 
 		    'The year was 1982, it was sweet!', "4 digit year");
@@ -67,6 +68,12 @@ test("Tests for Date.strftime()", function() {
             
     equals(d4.strftime("%c"),
             "Sat Oct 1 13:15:30 2011", "Localized datetime string");
+            
+    equals(d4.strftime("%m/%d/%Y is the %jth day of the year."),
+            "10/1/2011 is the 274th day of the year.", "Day of the year");
+            
+    equals(d5.strftime("%m/%d/%Y is the %jth day of the year."),
+            "3/15/1984 is the 75th day of the year.", "Day of the year (leap year)");
 });
 
 test("Tests for Date.isLeapYear()", function() {

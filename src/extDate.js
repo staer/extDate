@@ -11,9 +11,29 @@
         };
  */
 var extDate = {
+    
+    // The named months of the year, makes creating dates easier since
+    // JavaScript dates are zero-based which is just weird...
+    // i.e. 
+    //      var d = new Date(2011, extDate.JANUARY, 4);
+    // instead of:
+    //      var d = new Date(2011, 0, 4);   <--- note january is month zero!
+    JANUARY: 0,
+    FEBRUARY: 1,
+    MARCH: 2,
+    APRIL: 3,
+    MAY: 4,
+    JUNE: 5,
+    JULY: 6,
+    AUGUST: 7,
+    SEPTEMBER: 8,
+    OCTOBER: 9,
+    NOVEMBER: 10,
+    DECEMBER: 11,
+    
+    // Information about each month keyed by month number:
+    // Full name | Abbreviated Name | Days in month (non-leap year)
     months: {
-        // Information about each month keyed by month number:
-        // Full name | Abbreviated Name | Days in month (non-leap year)
         0: ['January', 'Jan', 31],
         1: ['February', 'Feb', 28],
         2: ['March', 'Mar', 31],
@@ -25,30 +45,12 @@ var extDate = {
         8: ['September', 'Sep', 30],
         9: ['October', 'Oct', 31],
         10: ['November', 'Nov', 30],
-        11: ['December', 'Dec', 31],
-        
-        // The named months of the year, makes creating dates easier since
-        // JavaScript dates are zero-based which is just weird...
-        // i.e. 
-        //      var d = new Date(2011, extDate.months.JANUARY, 4);
-        // instead of:
-        //      var d = new Date(2011, 0, 4);   <--- note january is month zero!
-        JANUARY: 0,
-        FEBRUARY: 1,
-        MARCH: 2,
-        APRIL: 3,
-        MAY: 4,
-        JUNE: 5,
-        JULY: 6,
-        AUGUST: 7,
-        SEPTEMBER: 8,
-        OCTOBER: 9,
-        NOVEMBER: 10,
-        DECEMBER: 11
+        11: ['December', 'Dec', 31]
     },
+    
+    // Information about each day of the week keyed by day number
+    // Full name | Abbreviated Name
     days: {
-        // Information about each day of the week keyed by day number
-        // Full name | Abbreviated Name
         0: ['Sunday', 'Sun'],
         1: ['Monday', 'Mon'],
         2: ['Tuesday', 'Tue'],
@@ -57,6 +59,7 @@ var extDate = {
         5: ['Friday', 'Fri'],
         6: ['Saturday', 'Sat']
     },
+    
     // Localized specific directives, these call strftime recursively to create
     // their result so the value is just a format string to use
     local: {

@@ -3,26 +3,26 @@
 // =========================
 
 // NOTE: Javascript date constructors use 0 based months... silly!
-var d = new Date(1982, extDate.months.SEPTEMBER, 25);                  // September 25th, 1982
-var d2 = new Date(1605, extDate.months.NOVEMBER, 5);                 // November 5th, 1605
-var d3 = new Date(2011, extDate.months.JANUARY, 4, 10, 10, 10);      // January 4th, 2011 (tuesday) @ 10:10:10am
-var d4 = new Date(2011, extDate.months.OCTOBER, 1, 13, 15, 30);      // Oct 1st, 2011 @ 1:15:30pm
-var d5 = new Date(1984, extDate.months.MARCH, 15);                 // March 15th, 1984 (leap year)
+var d = new Date(1982, extDate.SEPTEMBER, 25);                  // September 25th, 1982
+var d2 = new Date(1605, extDate.NOVEMBER, 5);                 // November 5th, 1605
+var d3 = new Date(2011, extDate.JANUARY, 4, 10, 10, 10);      // January 4th, 2011 (tuesday) @ 10:10:10am
+var d4 = new Date(2011, extDate.OCTOBER, 1, 13, 15, 30);      // Oct 1st, 2011 @ 1:15:30pm
+var d5 = new Date(1984, extDate.MARCH, 15);                 // March 15th, 1984 (leap year)
 
 module("Date");			
 test("Tests for Date.strftime()", function() {
     expect(23);
 	
-	equals(d.strftime('The year was %Y, it was sweet!'), 
+    equals(d.strftime('The year was %Y, it was sweet!'), 
 		    'The year was 1982, it was sweet!', "4 digit year");
 	
-	equals(d.strftime("The year was '%y, it was sweet!"), 
+    equals(d.strftime("The year was '%y, it was sweet!"), 
 			"The year was '82, it was sweet!", "2 digit year");
 	
-	equals(d.strftime("The 2 digit version of %Y is '%y!"),
+    equals(d.strftime("The 2 digit version of %Y is '%y!"),
 			"The 2 digit version of 1982 is '82!", "Multiple directives");
 	
-	equals(d.strftime("Give it 110%%!"), "Give it 110%!", "Escaped % sign");
+    equals(d.strftime("Give it 110%%!"), "Give it 110%!", "Escaped % sign");
     
     equals(d2.strftime("Remember, remember the 5th of %b."), 
             "Remember, remember the 5th of Nov.", "Short month name");
@@ -85,11 +85,11 @@ test("Tests for Date.strftime()", function() {
 test("Tests for Date.isLeapYear()", function() {
     expect(4);
 	
-	equals(new Date(1600, extDate.months.JANUARY, 1).isLeapYear(), true, "1600 (leap year)");
+	equals(new Date(1600, extDate.JANUARY, 1).isLeapYear(), true, "1600 (leap year)");
 	
-	equals(new Date(1700, extDate.months.JANUARY, 1).isLeapYear(), false, "1700 (non leap year)");
+	equals(new Date(1700, extDate.JANUARY, 1).isLeapYear(), false, "1700 (non leap year)");
 	
-	equals(new Date(1984, extDate.months.JANUARY, 1).isLeapYear(), true, "1984 (leap year)");
+	equals(new Date(1984, extDate.JANUARY, 1).isLeapYear(), true, "1984 (leap year)");
 	
-	equals(new Date(2011, extDate.months.JANUARY, 1).isLeapYear(), false, "2011 (non leap year)");
+	equals(new Date(2011, extDate.JANUARY, 1).isLeapYear(), false, "2011 (non leap year)");
 });

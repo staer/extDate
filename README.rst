@@ -79,7 +79,7 @@ Examples
 If you wanted to localize the days of the week to Spanish you would do something like the following::
 
     extDate.days = {
-		['Domingo', 'Dom'],     // Sunday
+        ['Domingo', 'Dom'],     // Sunday
 	    ['Lunes', 'Lun'],       // Monday
 	    ['Martes', 'Mar'],      // Tuesday
 	    ['Miercoles', 'Mie'],   // Wednesday
@@ -91,7 +91,7 @@ If you wanted to localize the days of the week to Spanish you would do something
 To change the localized date string output you would do the following::
  
     var d = new Date(2011, extDate.JANUARY, 5);
-	d.strftime("%x");							// Outputs "1/5/2011"
+    d.strftime("%x");							// Outputs "1/5/2011"
     extDate.local['x'] = "%A %B %d, %Y";		// Changes the localization of %x
     d.strftime("%x");							// Outputs "Wednesday January 5, 2011"       
 

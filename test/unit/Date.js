@@ -11,7 +11,7 @@ var d5 = new Date(1984, 2, 15);                 // March 15th, 1984 (leap year)
 
 module("Date");			
 test("Tests for Date.strftime()", function() {
-    expect(21);
+    expect(23);
 	
 	equals(d.strftime('The year was %Y, it was sweet!'), 
 		    'The year was 1982, it was sweet!', "4 digit year");
@@ -69,11 +69,17 @@ test("Tests for Date.strftime()", function() {
     equals(d4.strftime("%c"),
             "Sat Oct 1 13:15:30 2011", "Localized datetime string");
             
-    equals(d4.strftime("%m/%d/%Y is the %jth day of the year."),
+    equals(d4.strftime("10/1/2011 is the %jth day of the year."),
             "10/1/2011 is the 274th day of the year.", "Day of the year");
             
-    equals(d5.strftime("%m/%d/%Y is the %jth day of the year."),
+    equals(d5.strftime("3/15/1984 is the %jth day of the year."),
             "3/15/1984 is the 75th day of the year.", "Day of the year (leap year)");
+    
+    equals(d3.strftime("%H:%M:%S is in the %p."),
+            "10:10:10 is in the AM.", "AM test");
+    
+    equals(d4.strftime("%H:%M:%S is in the %p."),
+            "13:15:30 is in the PM.", "PM test");
 });
 
 test("Tests for Date.isLeapYear()", function() {

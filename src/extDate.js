@@ -112,7 +112,11 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += this.getMinutes();
                     break;
                 case 'p': // AM vs PM
-                    // TODO
+                    if(this.getHours() < 12) {
+                        outString += "AM";
+                    } else {
+                        outString += "PM";
+                    }
                     break;
                 case 'S': // Second as number 0-59
                     outString += this.getSeconds();

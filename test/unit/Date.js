@@ -104,3 +104,25 @@ test("Tests for Date.isLeapYear()", function() {
 	
 	equals(new Date(2011, extDate.JANUARY, 1).isLeapYear(), false, "2011 (non leap year)");
 });
+
+test("Tests for Date.strptime()", function() {   
+    expect(3);
+    
+    deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
+                new Date(2010, 0, 1, 0, 0, 0, 0), "Parse 4-digit year");
+    
+    // For some reason QUnit's "raises" test doesn't appear to work properly
+    try {
+        Date.strptime("THIS WILL NOT PARSE", "It's %Y!");
+        ok(false, "Un-parsable string should raise an exception");
+    } catch(e) {
+        ok(true, "Un-parsable string raises exception: " + e.message);
+    }
+    
+    try {
+        Date.strptime("%Q is an invalid directive", "%Q is an invalid directive");
+        ok(false, "Invalid format directive should raise an exception");
+    } catch(e) {
+        ok(true, "Invalid format directive: " + e.message);
+    }
+});

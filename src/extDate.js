@@ -69,6 +69,10 @@ var extDate = {
         'x': '%m/%d/%y',                // Localized date display
         'X': '%H:%M:%S',                // Localized time display
         'c': '%a %b %d %H:%M:%S %Y'     // Localized date/time display
+    },
+    
+    expressions: {
+        'Y': /^\d\d\d\d/
     }
 };
 
@@ -244,8 +248,51 @@ if(typeof Date.prototype.strftime !== 'function') {
 // ===================
 // = String.strptime =
 // ===================
-if(typeof String.prototype.strptime !== 'function') {
-    String.prototype.strptime = function(format) { 
-        return(new Date(1900,1,1)); 
+if(typeof Date.strptime !== 'function') {
+    Date.strptime = function(string, format) { 
+        var parsedDate = new Date(1900, 0, 1, 0, 0, 0, 0);
+        var remainingFormat = format;
+        var remainingString = string;
+        var index = format.indexOf('%');
+        var match = null;
+        
+        while(index !== -1) {
+            var startString = remainingFormat.substring(0,index);
+            var directive = remainingFormat.charAt(index+1);
+            
+            if(remainingString.indexOf(startString)!==0) {
+                throw new Error("time data '" + string + "' does not match format '" + format + "'");
+            }
+            
+            remainingString = remainingString.substring(startString.length);
+            if(!extDate.expressions.hasOwnProperty(directive)){
+                throw new Error("'" + directive + "' is a bad directive in format '%" + directive + "'");
+            } 
+            
+            match = extDate.expressions[directive].exec(remainingString);
+            if(match) {
+                switch(directive) {
+                    case 'Y':
+                        parsedDate.setFullYear(parseInt(match, 10));
+                        break;
+                    default:
+                        break;
+                }
+
+                remainingString = remainingString.substring(match[0].length);
+                match = null;
+            } else {
+                throw new Error("time data '" + string + "' does not match format '" + format + "'");
+            }
+                                    
+            remainingFormat = remainingFormat.substring(index+2);
+            index = remainingFormat.indexOf('%');
+        }
+        
+        if(remainingString!==remainingFormat) {
+            throw new Error("time data '" + string + "' does not match format '" + format + "'");
+        }
+        
+        return parsedDate;
     };
 }

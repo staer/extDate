@@ -72,7 +72,8 @@ var extDate = {
     },
     
     expressions: {
-        'Y': /^\d\d\d\d/
+        '%': /%/,                   // Escaped % sign
+        'Y': /^\d\d\d\d/            // 4-digit year
     }
 };
 

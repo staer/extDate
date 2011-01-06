@@ -106,10 +106,12 @@ test("Tests for Date.isLeapYear()", function() {
 });
 
 test("Tests for Date.strptime()", function() {   
-    expect(3);
+    expect(4);
     
     deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
                 new Date(2010, 0, 1, 0, 0, 0, 0), "Parse 4-digit year");
+                
+    deepEqual(Date.strptime("Escaped percent '%' sign!", "Escaped percent '%%' sign!"), new Date(1900, 0, 1, 0, 0, 0, 0), "Escaped % sign");
     
     // For some reason QUnit's "raises" test doesn't appear to work properly
     try {

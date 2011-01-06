@@ -165,7 +165,25 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += this.getSeconds();
                     break;
                 case 'U': // Week number of year starting on sunday
-                    // TODO
+                    // A: Find the number of days from Jan 1st to the 1st sunday
+                    // B: Find the numberof days in the year for the date
+                    // Take the difference B-A and divide by 7
+                    var week = 0;
+                    var days_til_sunday = 0;
+                    var today = new Date(this.getFullYear(), extDate.JANUARY, 1);
+                    while(today.getDay() !== 0) {
+                        today.setDate(today.getDate()+1);
+                        days_til_sunday++;
+                    }
+                    days = parseInt(this.strftime("%j"), 10);
+                    
+                    // Only run the calculation if the day in question is after the
+                    // first sunday of the year.
+                    if(days > days_til_sunday) {
+                        week = Math.floor((days-days_til_sunday) / 7)+1;    
+                    }
+                    
+                    outString += week;
                     break;
                 case 'w': // Weekday as number 0-6
                     outString += this.getDay();

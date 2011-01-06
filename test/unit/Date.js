@@ -8,10 +8,12 @@ var d2 = new Date(1605, extDate.NOVEMBER, 5);                 // November 5th, 1
 var d3 = new Date(2011, extDate.JANUARY, 4, 10, 10, 10);      // January 4th, 2011 (tuesday) @ 10:10:10am
 var d4 = new Date(2011, extDate.OCTOBER, 1, 13, 15, 30);      // Oct 1st, 2011 @ 1:15:30pm
 var d5 = new Date(1984, extDate.MARCH, 15);                 // March 15th, 1984 (leap year)
+var d6 = new Date(2010, extDate.NOVEMBER, 14);              // Sunday - 11/14/2010
+var d7 = new Date(2011, extDate.JANUARY, 1);                // Jan 1st
 
 module("Date");			
 test("Tests for Date.strftime()", function() {
-    expect(23);
+    expect(25);
 	
     equals(d.strftime('The year was %Y, it was sweet!'), 
 		    'The year was 1982, it was sweet!', "4 digit year");
@@ -80,6 +82,12 @@ test("Tests for Date.strftime()", function() {
     
     equals(d4.strftime("%H:%M:%S is in the %p."),
             "13:15:30 is in the PM.", "PM test");
+            
+    equals(d6.strftime("The week number is: %U!"),
+            "The week number is: 46!", "Week of year (starting on sundays)");
+            
+    equals(d7.strftime("The week number is: %U!"),
+            "The week number is: 0!", "Week of year before the first sunday");
 });
 
 test("Tests for Date.isLeapYear()", function() {

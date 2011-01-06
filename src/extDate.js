@@ -100,7 +100,9 @@ if(typeof Date.prototype.strftime !== 'function') {
         var year = null;        // variable used within the switch statement
         var month = null;       // variable used within the switch statement
         var hour = null;        // variable used within the switch statement
+        var week = null;
         var days = null;
+        var today = null;
         var outString = "";     // output string
         var remainingFormat = format;   // format string after being chopped up
         
@@ -168,19 +170,20 @@ if(typeof Date.prototype.strftime !== 'function') {
                     // A: Find the number of days from Jan 1st to the 1st sunday
                     // B: Find the numberof days in the year for the date
                     // Take the difference B-A and divide by 7
-                    var week = 0;
+                    week = 0;
                     var days_til_sunday = 0;
-                    var today = new Date(this.getFullYear(), extDate.JANUARY, 1);
+                    today = new Date(this.getFullYear(), extDate.JANUARY, 1);
                     while(today.getDay() !== 0) {
                         today.setDate(today.getDate()+1);
                         days_til_sunday++;
                     }
                     days = parseInt(this.strftime("%j"), 10);
-                    
+                    alert("Days: " + days);
+                    alert("Til Sunday: " + days_til_sunday);
                     // Only run the calculation if the day in question is after the
                     // first sunday of the year.
                     if(days > days_til_sunday) {
-                        week = Math.floor((days-days_til_sunday) / 7)+1;    
+                        week = Math.ceil((days-days_til_sunday) / 7);    
                     }
                     
                     outString += week;
@@ -189,7 +192,26 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += this.getDay();
                     break;
                 case 'W': // Week number of year 0-53 starting on monday
-                    // TODO
+                    // A: Find the number of days from Jan 1st to the 1st monday
+                    // B: Find the numberof days in the year for the date
+                    // Take the difference B-A and divide by 7
+                    week = 0;
+                    var days_til_monday = 0;
+                    today = new Date(this.getFullYear(), extDate.JANUARY, 1);
+                    while(today.getDay() !== 1) {
+                        today.setDate(today.getDate()+1);
+                        days_til_monday++;
+                    }
+                    days = parseInt(this.strftime("%j"), 10);
+                    alert(days);
+                    alert(days_til_monday);
+                    // Only run the calculation if the day in question is after the
+                    // first sunday of the year.
+                    if(days > days_til_monday) {
+                        week = Math.ceil((days-days_til_monday) / 7);    
+                    }
+                    
+                    outString += week;
                     break;
                 case 'x': // Locale's appropriate date representation
                     outString += this.strftime(extDate.local['x']);

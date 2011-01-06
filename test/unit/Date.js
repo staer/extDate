@@ -13,7 +13,7 @@ var d7 = new Date(2011, extDate.JANUARY, 1);                // Jan 1st
 
 module("Date");			
 test("Tests for Date.strftime()", function() {
-    expect(25);
+    expect(26);
 	
     equals(d.strftime('The year was %Y, it was sweet!'), 
 		    'The year was 1982, it was sweet!', "4 digit year");
@@ -88,6 +88,9 @@ test("Tests for Date.strftime()", function() {
             
     equals(d7.strftime("The week number is: %U!"),
             "The week number is: 0!", "Week of year before the first sunday");
+            
+    equals(d6.strftime("The week number is: %W!"),
+            "The week number is: 45!", "Week of year (starting on mondays)");
 });
 
 test("Tests for Date.isLeapYear()", function() {

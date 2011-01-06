@@ -178,8 +178,6 @@ if(typeof Date.prototype.strftime !== 'function') {
                         days_til_sunday++;
                     }
                     days = parseInt(this.strftime("%j"), 10);
-                    alert("Days: " + days);
-                    alert("Til Sunday: " + days_til_sunday);
                     // Only run the calculation if the day in question is after the
                     // first sunday of the year.
                     if(days > days_til_sunday) {
@@ -203,8 +201,6 @@ if(typeof Date.prototype.strftime !== 'function') {
                         days_til_monday++;
                     }
                     days = parseInt(this.strftime("%j"), 10);
-                    alert(days);
-                    alert(days_til_monday);
                     // Only run the calculation if the day in question is after the
                     // first sunday of the year.
                     if(days > days_til_monday) {
@@ -227,7 +223,8 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += this.getFullYear();
                     break;
                 case 'Z': // Time zone name
-                    // TODO
+                    // NOTE: Not implelemented due to JS limitations w/ timezones
+                    outString += "";
                     break;
                 case '%': // % sign
                     outString += "%";

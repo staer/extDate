@@ -78,7 +78,8 @@ var extDate = {
         'd': /^3[0-1]|[1-2]\d|0[1-9]|[1-9]| [1-9]/,  // day of month 1-31
         'H': /^2[0-3]|[0-1]\d|\d/,      // 24 hour clock
         'M': /^[0-5]\d|\d/,             // Minute 00-59
-        'S': /^[0-5]\d|\d/              // Seconds 00-59 (not we do not support leap seconds)
+        'S': /^[0-5]\d|\d/,             // Seconds 00-59 (not we do not support leap seconds)
+        'y': /^\d\d/                    // 2-digit year
     }
 };
 
@@ -263,6 +264,8 @@ if(typeof Date.strptime !== 'function') {
         var match = null;
         var matches = {};
         
+        var year = null;
+        
         while(index !== -1) {
             var startString = remainingFormat.substring(0,index);
             var directive = remainingFormat.charAt(index+1);
@@ -315,6 +318,18 @@ if(typeof Date.strptime !== 'function') {
         }
         if(matches["S"]) {
             parsedDate.setSeconds(parseInt(matches["S"], 10));
+        }
+        if(matches['y']) {
+            // Open Group specification for strptime() states that a %y
+            // value in the range of [00, 68] is in the century 2000, while
+            // [69,99] is in the century 1900
+            year = parseInt(matches['y'], 10);
+            if(year<=68) {
+                year += 2000;
+            } else {
+                year += 1900;
+            }
+            parsedDate.setFullYear(year);
         }
         
         

@@ -261,6 +261,7 @@ if(typeof Date.strptime !== 'function') {
         var remainingString = string;
         var index = format.indexOf('%');
         var match = null;
+        var matches = {};
         
         while(index !== -1) {
             var startString = remainingFormat.substring(0,index);
@@ -277,30 +278,7 @@ if(typeof Date.strptime !== 'function') {
             
             match = extDate.expressions[directive].exec(remainingString);
             if(match) {
-                switch(directive) {
-                    case 'Y':
-                        parsedDate.setFullYear(parseInt(match, 10));
-                        break;
-                    case 'm':
-                        // Note: setMonth takes months in form 0-11 not 1-12
-                        parsedDate.setMonth(parseInt(match, 10) - 1);
-                        break;
-                    case 'd':
-                        parsedDate.setDate(parseInt(match, 10));
-                        break;
-                    case 'H':
-                        parsedDate.setHours(parseInt(match, 10));
-                        break;
-                    case 'M':
-                        parsedDate.setMinutes(parseInt(match, 10));
-                        break;
-                    case 'S':
-                        parsedDate.setSeconds(parseInt(match, 10));
-                        break;
-                    default:
-                        break;
-                }
-
+                matches[directive] = match;
                 remainingString = remainingString.substring(match[0].length);
                 match = null;
             } else {
@@ -314,6 +292,31 @@ if(typeof Date.strptime !== 'function') {
         if(remainingString!==remainingFormat) {
             throw new Error("time data '" + string + "' does not match format '" + format + "'");
         }
+        
+        
+        // Process all the different tyeps of matches
+        // We do this outside of the loop because some of the directives can
+        // depend on each other. For example the 12 hour clock can use information
+        // from AM/PM directive to figure out if it's 12am or 12pm
+        if(matches["Y"]) {
+            parsedDate.setFullYear(parseInt(matches["Y"], 10));
+        }
+        if(matches["m"]) {
+            parsedDate.setMonth(parseInt(matches["m"], 10) - 1);
+        }
+        if(matches["d"]) {
+            parsedDate.setDate(parseInt(matches["d"], 10));
+        }
+        if(matches["H"]) {
+            parsedDate.setHours(parseInt(matches["H"], 10));
+        }
+        if(matches["M"]) {
+            parsedDate.setMinutes(parseInt(matches["M"], 10));
+        }
+        if(matches["S"]) {
+            parsedDate.setSeconds(parseInt(matches["S"], 10));
+        }
+        
         
         return parsedDate;
     };

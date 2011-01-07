@@ -74,7 +74,8 @@ var extDate = {
     expressions: {
         '%': /%/,                       // Escaped % sign
         'Y': /^\d\d\d\d/,               // 4-digit year
-        'm': /^1[0-2]|0[1-9]|[1-9]/    // month
+        'm': /^1[0-2]|0[1-9]|[1-9]/,    // month
+        'd': /^3[0-1]|[1-2]\d|0[1-9]|[1-9]| [1-9]/  // day of month 1-31
     }
 };
 
@@ -280,6 +281,9 @@ if(typeof Date.strptime !== 'function') {
                     case 'm':
                         // Note: setMonth takes months in form 0-11 not 1-12
                         parsedDate.setMonth(parseInt(match, 10) - 1);
+                        break;
+                    case 'd':
+                        parsedDate.setDate(parseInt(match, 10));
                         break;
                     default:
                         break;

@@ -106,7 +106,7 @@ test("Tests for Date.isLeapYear()", function() {
 });
 
 test("Tests for Date.strptime()", function() {   
-    expect(12);
+    expect(15);
     
     // Tests for %Y directive
     deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
@@ -145,6 +145,17 @@ test("Tests for Date.strptime()", function() {
     deepEqual(Date.strptime("12/ 1/2001", "%m/%d/%Y"),
                 new Date(2001, extDate.DECEMBER, 1, 0, 0, 0, 0),
                 "Parse day of month number");
+                
+    // Tests for %H directive
+    deepEqual(Date.strptime("12/25/2001 22:00:00", "%m/%d/%Y %H:00:00"),
+                new Date(2001, extDate.DECEMBER, 25, 22, 0, 0, 0),
+                "Parse Hours (24 hour clock)");                
+    deepEqual(Date.strptime("12/25/2001 11:00:00", "%m/%d/%Y %H:00:00"),
+                new Date(2001, extDate.DECEMBER, 25, 11, 0, 0, 0),
+                "Parse Hours (24 hour clock)");
+    deepEqual(Date.strptime("12/25/2001 9:00:00", "%m/%d/%Y %H:00:00"),
+                new Date(2001, extDate.DECEMBER, 25, 9, 0, 0, 0),
+                "Parse Hours (24 hour clock)");
     
     // For some reason QUnit's "raises" test doesn't appear to work properly
     try {

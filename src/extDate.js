@@ -75,7 +75,8 @@ var extDate = {
         '%': /%/,                       // Escaped % sign
         'Y': /^\d\d\d\d/,               // 4-digit year
         'm': /^1[0-2]|0[1-9]|[1-9]/,    // month
-        'd': /^3[0-1]|[1-2]\d|0[1-9]|[1-9]| [1-9]/  // day of month 1-31
+        'd': /^3[0-1]|[1-2]\d|0[1-9]|[1-9]| [1-9]/,  // day of month 1-31
+        'H': /^2[0-3]|[0-1]\d|\d/      // 24 hour clock
     }
 };
 
@@ -284,6 +285,9 @@ if(typeof Date.strptime !== 'function') {
                         break;
                     case 'd':
                         parsedDate.setDate(parseInt(match, 10));
+                        break;
+                    case 'H':
+                        parsedDate.setHours(parseInt(match, 10));
                         break;
                     default:
                         break;

@@ -106,22 +106,44 @@ test("Tests for Date.isLeapYear()", function() {
 });
 
 test("Tests for Date.strptime()", function() {   
-    expect(6);
+    expect(12);
     
+    // Tests for %Y directive
     deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
                 new Date(2010, extDate.JANUARY, 1, 0, 0, 0, 0), 
                 "Parse 4-digit year");
                 
+    // Tests for %% directive
     deepEqual(Date.strptime("Escaped percent '%' sign!", "Escaped percent '%%' sign!"), 
                 new Date(1900, 0, 1, 0, 0, 0, 0), 
                 "Escaped % sign");
     
+    // Tests for %m directive
     deepEqual(Date.strptime("12/2001", "%m/%Y"),
                 new Date(2001, extDate.DECEMBER, 1, 0, 0, 0, 0), 
+                "Parse month number");            
+    deepEqual(Date.strptime("9/2001", "%m/%Y"),
+                new Date(2001, extDate.SEPTEMBER, 1, 0, 0, 0, 0), 
                 "Parse month number");
-                
+    deepEqual(Date.strptime("09/2001", "%m/%Y"),
+                new Date(2001, extDate.SEPTEMBER, 1, 0, 0, 0, 0), 
+                "Parse month number");
+              
+    // Tests for %d directive  
     deepEqual(Date.strptime("12/25/2001", "%m/%d/%Y"),
                 new Date(2001, extDate.DECEMBER, 25, 0, 0, 0, 0),
+                "Parse day of month number");
+    deepEqual(Date.strptime("12/30/2001", "%m/%d/%Y"),
+                new Date(2001, extDate.DECEMBER, 30, 0, 0, 0, 0),
+                "Parse day of month number");
+    deepEqual(Date.strptime("12/1/2001", "%m/%d/%Y"),
+                new Date(2001, extDate.DECEMBER, 1, 0, 0, 0, 0),
+                "Parse day of month number");
+    deepEqual(Date.strptime("12/01/2001", "%m/%d/%Y"),
+                new Date(2001, extDate.DECEMBER, 1, 0, 0, 0, 0),
+                "Parse day of month number");
+    deepEqual(Date.strptime("12/ 1/2001", "%m/%d/%Y"),
+                new Date(2001, extDate.DECEMBER, 1, 0, 0, 0, 0),
                 "Parse day of month number");
     
     // For some reason QUnit's "raises" test doesn't appear to work properly

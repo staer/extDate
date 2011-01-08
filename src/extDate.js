@@ -88,7 +88,10 @@ var extDate = {
         'b': /^Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/,
         'p': /^AM|PM/,
         'I': /^1[0-2]|0[1-9]|[1-9]| [1-9]/,      // 12 hour clock
-        'j': /^36[0-6]|3[0-5]\d|[1-2]\d\d|0[1-9]\d|00[1-9]|[1-9]\d|0[1-9]|[1-9]/ // day of year 1-366
+        'j': /^36[0-6]|3[0-5]\d|[1-2]\d\d|0[1-9]\d|00[1-9]|[1-9]\d|0[1-9]|[1-9]/, // day of year 1-366
+        'w': /^[0-6]/,                           // Day of week 0-6
+        'A': /^Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday/,        // Day of week long
+        'a': /^Sun|Mon|Tue|Wed|Thu|Fri|Sat/         // Day of week abbreviated
     }
     
     
@@ -280,6 +283,12 @@ if(typeof Date.strptime !== 'function') {
         var hour = null;
         var day = null;
         
+        // Variables used to store pieces of information that we need to 
+        // reconstruct a full date
+        var day_of_week = null;
+        var week_of_year = null;
+        var week_starts_on = null;
+        
         while(index !== -1) {
             var startString = remainingFormat.substring(0,index);
             var directive = remainingFormat.charAt(index+1);
@@ -377,6 +386,31 @@ if(typeof Date.strptime !== 'function') {
                    break;
                }
            }
+        }
+        
+        // Day of week (numbered)
+        if(matches['w']) {
+            day_of_week = parseInt(matches['w'], 10);
+        }
+        // Day of week (abbreviated)
+        if(matches['a']) {
+            day = matches['a'];
+            for(index=0;index<7;index++) {
+                if(extDate.days[index][1] === day) {
+                    day_of_week = index;
+                    break;
+                }
+            }
+        }
+        // Day of week (full)
+        if(matches['A']) {
+            day = matches['A'];
+            for(index=0;index<7;index++) {
+                if(extDate.days[index][0] === day) {
+                    day_of_week = index;
+                    break;
+                }
+            }
         }
         
         // 12 hour clock

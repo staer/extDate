@@ -106,7 +106,7 @@ test("Tests for Date.isLeapYear()", function() {
 });
 
 test("Tests for Date.strptime()", function() {   
-    expect(36);
+    expect(37);
     
     // Tests for %Y directive
     deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
@@ -243,6 +243,10 @@ test("Tests for Date.strptime()", function() {
     deepEqual(Date.strptime("Tuesday week 0 of 2010", "%A week %W of %Y"),
                 new Date(2009, extDate.DECEMBER, 29, 0, 0, 0, 0),
                 "Parse 0th week of year and day of week when it lands in the previous year");
+                
+    deepEqual(Date.strptime("Fri Aug 13 10:15:30 2010", "%c"),
+                new Date(2010, extDate.AUGUST, 13, 10, 15, 30, 0),
+                "Parse localized date/time string");
     
     
                     

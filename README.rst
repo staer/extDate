@@ -5,14 +5,22 @@ extDate is a set of extensions regarding the JavaScript Date object, adding in s
 
 * Date.isLeapYear(): check to see if the date occurs on a leap year
 * Date.strftime(): Output the date in a variety of formats (similar to Python strftime)
-* A String.strptime(): Parse a string into a valid Date object (COMING SOON)
+* A Date.strptime(): Parse a string into a valid Date object
 * Helper constants to make creating new Date objects easier
 * Easy localization: Easily make the module work in languages other than English
 
 Installation
 ============
 
-Coming soon...
+Grab the latest version of extDate on GitHub by browsing the repository source tree and finding the extDate.js file located in the src directory. Alternatively you can clone the whole repository by running::
+
+	git clone https://github.com/staer/extDate.git
+
+To add extDate into your website project, all you have to do is add the following script tag at the top of your HTML file along with the rest of your JavaScript includes::
+
+    <script type="text/javascript" src="/path/to/extDate.js"></script>
+
+That's it! Keep reading for more information on how to use extDate.js
 
 Usage
 =====
@@ -35,17 +43,14 @@ This method returns a date string based on the format string passed in::
 
 The format strings and directives that can be used are roughly the same as those available in Python, see http://www.strftime.org or http://docs.python.org/library/time.html#time.strftime for more information.
 
-More information coming soon...
-
-String.strptime(format)
+Date.strptime(string, format)
 -----------------------
 
 This method parses on a string based on the format parameter and returns a Date object::
 
-    var s = "1/1/2011";
-    var d = s.strptime("%m/%d/%Y");   // d = Date(2011,0,1);
+    Date.strptime("1/1/2011", "%m/%d/%Y");   // returns Date(2011,0,1);
 
-More information coming soon....
+The format strings are directives that can be used are roughly the same as those available in Python's strptime() implementation. See http://www.strftime.org or http://docs.python.org/library/time.html#time.strftime for more information.
 
 Helpers
 -------
@@ -54,7 +59,7 @@ One of the problems I have with JavaScript Date objects is that is uses zero-bas
     
     var d = new Date(2011, 0, 1);		// January 1st
 
-Which is somewhat un-inuititive. As such, extDate contains some constants to help make creating dates a bit more clear::
+Which is somewhat un-intuitive. As such, extDate contains some constants to help make creating dates a bit more clear::
 
     var d = new Date(2011, extDate.JANUARY, 1);		// January 1st
     var d= new Date(2011, extDate.MARCH, 15);		// March 15th

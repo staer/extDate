@@ -110,7 +110,7 @@ test("Tests for Date.isLeapYear()", function() {
 });
 
 test("Tests for Date.strptime()", function() {   
-    expect(38);
+    expect(39);
     
     // Tests for %Y directive
     deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
@@ -256,6 +256,13 @@ test("Tests for Date.strptime()", function() {
     deepEqual(Date.strptime("2011-09-28T04:59:00Z", "%Y-%m-%dT%H:%M:%SZ"),
                 new Date(2011, extDate.SEPTEMBER, 28, 4, 59, 00, 00),
                 "Date pulled from Groupon API");
+                
+    // Test parsing a UTC date
+    var d = new Date(2011, extDate.SEPTEMBER, 28);
+    var timezonediff = d.getTimezoneOffset() / 60;      // timezone offset in hours
+    deepEqual(Date.strptime("2011-09-28T04:59:00Z", "%Y-%m-%dT%H:%M:%SZ", true),
+                new Date(2011, extDate.SEPTEMBER, 28, 4-timezonediff, 59, 0, 0),
+                "Parse a UTC date and check against local time");
     
     
                     

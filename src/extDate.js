@@ -304,8 +304,7 @@ if(typeof Date.prototype.strftime !== 'function') {
 // = String.strptime =
 // ===================
 if(typeof Date.strptime !== 'function') {
-    Date.strptime = function(string, format) { 
-        var parsedDate = new Date(1900, 0, 1, 0, 0, 0, 0);
+    Date.strptime = function(string, format, useUTC) { 
         var remainingFormat = format;
         var remainingString = string;
         var index = format.indexOf('%');
@@ -316,6 +315,15 @@ if(typeof Date.strptime !== 'function') {
         var month = null;
         var hour = null;
         var day = null;
+        
+        // These variables store whatever we parse out
+        var realFullYear = 1900;
+        var realMonth = 0;
+        var realDate = 1;
+        var realDay = null;// needed?
+        var realHours = 0;
+        var realMinutes = 0;
+        var realSeconds = 0;
         
         // Variables used to store pieces of information that we need to 
         // reconstruct a full date
@@ -372,22 +380,22 @@ if(typeof Date.strptime !== 'function') {
         // depend on each other. For example the 12 hour clock can use information
         // from AM/PM directive to figure out if it's 12am or 12pm
         if(matches["Y"]) {
-            parsedDate.setFullYear(parseInt(matches["Y"], 10));
+            realFullYear = parseInt(matches["Y"], 10);
         }
         if(matches["m"]) {
-            parsedDate.setMonth(parseInt(matches["m"], 10) - 1);
+            realMonth = parseInt(matches["m"], 10) - 1;
         }
         if(matches["d"]) {
-            parsedDate.setDate(parseInt(matches["d"], 10));
+            realDate = parseInt(matches["d"], 10);
         }
         if(matches["H"]) {
-            parsedDate.setHours(parseInt(matches["H"], 10));
+            realHours = parseInt(matches["H"], 10);
         }
         if(matches["M"]) {
-            parsedDate.setMinutes(parseInt(matches["M"], 10));
+            realMinutes = parseInt(matches["M"], 10);
         }
         if(matches["S"]) {
-            parsedDate.setSeconds(parseInt(matches["S"], 10));
+            realSeconds = parseInt(matches["S"], 10);
         }
         if(matches['y']) {
             // Open Group specification for strptime() states that a %y
@@ -399,14 +407,14 @@ if(typeof Date.strptime !== 'function') {
             } else {
                 year += 1900;
             }
-            parsedDate.setFullYear(year);
+            realFullYear = year;
         }
         // Full month name
         if(matches['B']) {
            month = matches['B'];
            for(index=0;index<12;index++) {
                if(extDate.months[index][0] === month) {
-                   parsedDate.setMonth(index);
+                   realMonth = index;
                    break;
                }
            }
@@ -416,7 +424,7 @@ if(typeof Date.strptime !== 'function') {
            month = matches['b'];
            for(index=0;index<12;index++) {
                if(extDate.months[index][1] === month) {
-                   parsedDate.setMonth(index);
+                   realMonth = index;
                    break;
                }
            }
@@ -471,13 +479,14 @@ if(typeof Date.strptime !== 'function') {
                     hour = 0;
                 }
             }
-            parsedDate.setHours(hour);
+            realHours = hour;
         }
         
         // day of year
+        // NOTE: This may not work, check unit tests!
         if(matches['j']) {
             day = parseInt(matches['j'], 10);
-            parsedDate.setDate(day);
+            realDate = day;
         }
         
         // If we have a week of the year + day of the week + week_starts_on
@@ -486,7 +495,7 @@ if(typeof Date.strptime !== 'function') {
             var remaining_days = null;
             var temp_date = new Date(year, extDate.JANUARY, 1);
             var first_day_of_week_1 = 1;
-            year = parseInt(parsedDate.getFullYear(), 10);
+            year = parseInt(realFullYear, 10);
             
             first_day_of_week_1 = 1;
             temp_date = new Date(year, extDate.JANUARY, 1);
@@ -500,7 +509,7 @@ if(typeof Date.strptime !== 'function') {
                 // the current year for week 0, we loop backwards to last year
                 // For example: Tuesday Week 0 of 2010 would come back as "12/29/2009"
                 // While Saturday Week 0 of 2010 would be "1/2/2010"
-                
+                temp_date = new Date(year, extDate.JANUARY, 1);
                 // Figure out how many days to go back from the first day of week 1 to hit the day we want
                 var date_diff = 0;
                 if(week_starts_on==extDate.SUNDAY) {
@@ -512,14 +521,14 @@ if(typeof Date.strptime !== 'function') {
                 
                 // See if the day lies in this year or last year
                 if(first_day_of_week_1 -  Math.abs(date_diff) >= 1) {
-                    parsedDate.setDate(first_day_of_week_1-date_diff);
+                    realDate = first_day_of_week_1 - date_diff;
                 } else {
                     // We have to roll back from December 31st of last year a few days
-                    parsedDate.setFullYear(year-1);
-                    parsedDate.setMonth(extDate.DECEMBER);
                     day = extDate.months[extDate.DECEMBER][2];
                     day -= Math.abs((first_day_of_week_1 - date_diff));
-                    parsedDate.setDate(day);
+                    realFullYear = year-1;
+                    realMonth = extDate.DECEMBER;
+                    realDate = day;
                 }
             } else {
                 remaining_days = first_day_of_week_1 + (week_of_year-1)*7;
@@ -527,7 +536,7 @@ if(typeof Date.strptime !== 'function') {
                 for(month=extDate.JANUARY;month<=extDate.DECEMBER;month++) {
                     var days_in_month = extDate.months[month][2];
                     // If it's a leap year and february we need to add an extra day
-                    if(parsedDate.isLeapYear() && month===extDate.FEBRUARY) {
+                    if(new Date(year, 0, 1).isLeapYear() && month===extDate.FEBRUARY) {
                         days_in_month += 1;
                     }
                     if(remaining_days-days_in_month > 0) {
@@ -536,23 +545,34 @@ if(typeof Date.strptime !== 'function') {
                         break;
                     }
                 }
-                parsedDate.setMonth(month);
-                parsedDate.setDate(remaining_days);
+                realMonth = month;
+                realDate = remaining_days;
                 
+                temp_date = new Date(realFullYear, realMonth, realDate);
                 // Now that we have the correct month and beginning of the week
                 // we can loop through until we get the right day of week
-                while(parsedDate.getDay()!==day_of_week) {
-                    parsedDate.setDate(parsedDate.getDate()+1);
+                while(temp_date.getDay()!==day_of_week) {
+                    temp_date.setDate(temp_date.getDate()+1);
                 }
+                realDate = temp_date.getDate();
             }
         } 
         
-        return parsedDate;
+        temp_date = new Date(realFullYear, realMonth, realDate, realHours, realMinutes, realSeconds, 0);
+        if(useUTC) {
+            temp_date.setUTCFullYear(realFullYear);
+            temp_date.setUTCMonth(realMonth);
+            temp_date.setUTCDate(realDate);
+            temp_date.setUTCHours(realHours);
+            temp_date.setUTCMinutes(realMinutes);
+            temp_date.setUTCSeconds(realSeconds);
+        }
+        return temp_date;
     };
 }
 // String.strptime
 if(typeof String.prototype.strptime !== 'function') {
-    String.prototype.strptime = function(format) { 
-        return Date.strptime(this, format);
+    String.prototype.strptime = function(format, useUTC) { 
+        return Date.strptime(this, format, useUTC);
     };
 }

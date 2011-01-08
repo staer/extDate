@@ -106,7 +106,7 @@ test("Tests for Date.isLeapYear()", function() {
 });
 
 test("Tests for Date.strptime()", function() {   
-    expect(24);
+    expect(25);
     
     // Tests for %Y directive
     deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
@@ -195,7 +195,12 @@ test("Tests for Date.strptime()", function() {
     deepEqual(Date.strptime("12/25/2010 @ 5", "%m/%d/%Y @ %I"),
                 new Date(2010, extDate.DECEMBER, 25, 5, 0, 0, 0),
                 "Parsed 12 hour clock w/o AM/PM specified");
-    
+                
+    // Tests for %j (day of year)
+    deepEqual(Date.strptime("Today is day 274 of 2011.", "Today is day %j of %Y."),
+                new Date(2011, extDate.OCTOBER, 1, 0, 0, 0, 0),
+                "Parse day of year");
+                    
     // For some reason QUnit's "raises" test doesn't appear to work properly
     try {
         Date.strptime("THIS WILL NOT PARSE", "It's %Y!");

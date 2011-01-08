@@ -87,7 +87,8 @@ var extDate = {
         'B': /^January|February|March|April|May|June|July|August|September|October|November|December/,
         'b': /^Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/,
         'p': /^AM|PM/,
-        'I': /^1[0-2]|0[1-9]|[1-9]| [1-9]/      // 12 hour clock
+        'I': /^1[0-2]|0[1-9]|[1-9]| [1-9]/,      // 12 hour clock
+        'j': /^36[0-6]|3[0-5]\d|[1-2]\d\d|0[1-9]\d|00[1-9]|[1-9]\d|0[1-9]|[1-9]/ // day of year 1-366
     }
     
     
@@ -277,6 +278,7 @@ if(typeof Date.strptime !== 'function') {
         var year = null;
         var month = null;
         var hour = null;
+        var day = null;
         
         while(index !== -1) {
             var startString = remainingFormat.substring(0,index);
@@ -379,6 +381,12 @@ if(typeof Date.strptime !== 'function') {
                 }
             }
             parsedDate.setHours(hour);
+        }
+        
+        // day of year
+        if(matches['j']) {
+            day = parseInt(matches['j'], 10);
+            parsedDate.setDate(day);
         }
         
         

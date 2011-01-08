@@ -85,7 +85,9 @@ var extDate = {
         // NOTE: These need to be easily localized. Could rebuild them on-the fly when the function
         // is called...
         'B': /^January|February|March|April|May|June|July|August|September|October|November|December/,
-        'b': /^Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/
+        'b': /^Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/,
+        'p': /^AM|PM/,
+        'I': /^1[0-2]|0[1-9]|[1-9]| [1-9]/      // 12 hour clock
     }
     
     
@@ -274,6 +276,7 @@ if(typeof Date.strptime !== 'function') {
         
         var year = null;
         var month = null;
+        var hour = null;
         
         while(index !== -1) {
             var startString = remainingFormat.substring(0,index);
@@ -360,6 +363,25 @@ if(typeof Date.strptime !== 'function') {
                }
            }
         }
+        
+        // 12 hour clock
+        if(matches['I']) {
+            hour = parseInt(matches['I'], 10);
+            
+            // If am/pm was specified and it's pm, add 12
+            if(matches['p'] && matches['p']===extDate.local['p'][1]) {
+                if(hour!==12) {
+                    hour += 12;
+                }
+            } else {
+                if(hour===12) {
+                    hour = 0;
+                }
+            }
+            parsedDate.setHours(hour);
+        }
+        
+        
         
         
         return parsedDate;

@@ -81,7 +81,11 @@ var extDate = {
         'M': /^[0-5]\d|\d/,             // Minute 00-59
         'S': /^[0-5]\d|\d/,             // Seconds 00-59 (not we do not support leap seconds)
         'y': /^\d\d/,                   // 2-digit year
-        'B': /^January|February|March|April|May|June|July|August|September|October|November|December/
+        
+        // NOTE: These need to be easily localized. Could rebuild them on-the fly when the function
+        // is called...
+        'B': /^January|February|March|April|May|June|July|August|September|October|November|December/,
+        'b': /^Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/
     }
     
     
@@ -336,11 +340,22 @@ if(typeof Date.strptime !== 'function') {
             }
             parsedDate.setFullYear(year);
         }
+        // Full month name
         if(matches['B']) {
            month = matches['B'];
-           for(var i=0;i<12;i++) {
-               if(extDate.months[i][0] === month) {
-                   parsedDate.setMonth(i);
+           for(index=0;index<12;index++) {
+               if(extDate.months[index][0] === month) {
+                   parsedDate.setMonth(index);
+                   break;
+               }
+           }
+        }
+        // Abbreviated month name
+        if(matches['b']) {
+           month = matches['b'];
+           for(index=0;index<12;index++) {
+               if(extDate.months[index][1] === month) {
+                   parsedDate.setMonth(index);
                    break;
                }
            }

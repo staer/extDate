@@ -80,8 +80,11 @@ var extDate = {
         'H': /^2[0-3]|[0-1]\d|\d/,      // 24 hour clock
         'M': /^[0-5]\d|\d/,             // Minute 00-59
         'S': /^[0-5]\d|\d/,             // Seconds 00-59 (not we do not support leap seconds)
-        'y': /^\d\d/                    // 2-digit year
+        'y': /^\d\d/,                   // 2-digit year
+        'B': /^January|February|March|April|May|June|July|August|September|October|November|December/
     }
+    
+    
 };
 
 // =====================
@@ -266,6 +269,7 @@ if(typeof Date.strptime !== 'function') {
         var matches = {};
         
         var year = null;
+        var month = null;
         
         while(index !== -1) {
             var startString = remainingFormat.substring(0,index);
@@ -282,7 +286,7 @@ if(typeof Date.strptime !== 'function') {
             
             match = extDate.expressions[directive].exec(remainingString);
             if(match) {
-                matches[directive] = match;
+                matches[directive] = match[0];
                 remainingString = remainingString.substring(match[0].length);
                 match = null;
             } else {
@@ -331,6 +335,15 @@ if(typeof Date.strptime !== 'function') {
                 year += 1900;
             }
             parsedDate.setFullYear(year);
+        }
+        if(matches['B']) {
+           month = matches['B'];
+           for(var i=0;i<12;i++) {
+               if(extDate.months[i][0] === month) {
+                   parsedDate.setMonth(i);
+                   break;
+               }
+           }
         }
         
         

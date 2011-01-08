@@ -106,7 +106,7 @@ test("Tests for Date.isLeapYear()", function() {
 });
 
 test("Tests for Date.strptime()", function() {   
-    expect(19);
+    expect(20);
     
     // Tests for %Y directive
     deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
@@ -174,6 +174,10 @@ test("Tests for Date.strptime()", function() {
     deepEqual(Date.strptime("12/25/89", "%m/%d/%y"),
                 new Date(1989, extDate.DECEMBER, 25, 0, 0, 0, 0),
                 "Parse 2 digit year greater than 68");
+                
+    deepEqual(Date.strptime("November 25, 1990", "%B %d, %Y"),
+                new Date(1990, extDate.NOVEMBER, 25, 0, 0, 0, 0),
+                "Parse full month name");
     
     // For some reason QUnit's "raises" test doesn't appear to work properly
     try {

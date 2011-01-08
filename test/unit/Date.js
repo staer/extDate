@@ -106,7 +106,7 @@ test("Tests for Date.isLeapYear()", function() {
 });
 
 test("Tests for Date.strptime()", function() {   
-    expect(25);
+    expect(27);
     
     // Tests for %Y directive
     deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
@@ -200,6 +200,16 @@ test("Tests for Date.strptime()", function() {
     deepEqual(Date.strptime("Today is day 274 of 2011.", "Today is day %j of %Y."),
                 new Date(2011, extDate.OCTOBER, 1, 0, 0, 0, 0),
                 "Parse day of year");
+                
+    // Test localized formats (%x, %X, %c)
+    deepEqual(Date.strptime("It is now 12/25/01!", "It is now %x!"),
+                new Date(2001, extDate.DECEMBER, 25, 0, 0, 0, 0),
+                "Parse localized date string (%x)");
+    deepEqual(Date.strptime("It is now 12/25/2001 10:15:30!", "It is now %m/%d/%Y %X!"),
+                new Date(2001, extDate.DECEMBER, 25, 10, 15, 30, 0),
+                "Parse localized time string (%X)");
+    // TODO: Localized date time string
+    
                     
     // For some reason QUnit's "raises" test doesn't appear to work properly
     try {

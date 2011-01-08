@@ -289,6 +289,20 @@ if(typeof Date.strptime !== 'function') {
             }
             
             remainingString = remainingString.substring(startString.length);
+            remainingFormat = remainingFormat.substring(index+2);
+            index = remainingFormat.indexOf('%');
+            
+            // If it is a localized directive, we just replace the directive with
+            // a new set of directives specific to the local, find the next directive
+            // and continue on
+            if(directive==='x' || directive==='X' || directive==='c') {
+                remainingFormat = extDate.local[directive] + remainingFormat;
+                index = remainingFormat.indexOf('%');
+                continue;
+            }
+            
+            
+            
             if(!extDate.expressions.hasOwnProperty(directive)){
                 throw new Error("'" + directive + "' is a bad directive in format '%" + directive + "'");
             } 
@@ -302,8 +316,7 @@ if(typeof Date.strptime !== 'function') {
                 throw new Error("time data '" + string + "' does not match format '" + format + "'");
             }
                                     
-            remainingFormat = remainingFormat.substring(index+2);
-            index = remainingFormat.indexOf('%');
+            
         }
         
         if(remainingString!==remainingFormat) {

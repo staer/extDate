@@ -135,7 +135,7 @@ if(typeof Date.prototype.isLeapYear !== 'function') {
 // = Date.strftime() =
 // ===================
 if(typeof Date.prototype.strftime !== 'function') {
-    Date.prototype.strftime = function(format, useUTCTime) {
+    Date.prototype.strftime = function(format, useUTC) {
         var year = null;        // variable used within the switch statement
         var month = null;       // variable used within the switch statement
         var hour = null;        // variable used within the switch statement
@@ -153,9 +153,9 @@ if(typeof Date.prototype.strftime !== 'function') {
         var realSeconds = this.getSeconds();
         var realFullYear = this.getFullYear(); 
         
-        // If useUTCTime is set, then use the UTC values instead of whatever the
+        // If useUTC is set, then use the UTC values instead of whatever the
         // local time zone is
-        if(useUTCTime) {
+        if(useUTC) {
             realDay = this.getUTCDay();
             realMonth = this.getUTCMonth();
             realDate = this.getUTCDate();
@@ -184,7 +184,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += extDate.months[realMonth][0];
                     break;
                 case 'c': // Locale's appropriate date/time representation
-                    outString += this.strftime(extDate.local['c'], useUTCTime);
+                    outString += this.strftime(extDate.local['c'], useUTC);
                     break;
                 case 'd': // Day of month as decimal number 1-31
                     outString += realDate;
@@ -236,7 +236,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                         today.setDate(today.getDate()+1);
                         days_til_sunday++;
                     }
-                    days = parseInt(this.strftime("%j", useUTCTime), 10);
+                    days = parseInt(this.strftime("%j", useUTC), 10);
                     // Only run the calculation if the day in question is after the
                     // first sunday of the year.
                     if(days > days_til_sunday) {
@@ -259,7 +259,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                         today.setDate(today.getDate()+1);
                         days_til_monday++;
                     }
-                    days = parseInt(this.strftime("%j", useUTCTime), 10);
+                    days = parseInt(this.strftime("%j", useUTC), 10);
                     // Only run the calculation if the day in question is after the
                     // first sunday of the year.
                     if(days > days_til_monday) {
@@ -269,10 +269,10 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += week;
                     break;
                 case 'x': // Locale's appropriate date representation
-                    outString += this.strftime(extDate.local['x'], useUTCTime);
+                    outString += this.strftime(extDate.local['x'], useUTC);
                     break;
                 case 'X': // Locale's appropriate time representation
-                    outString += this.strftime(extDate.local['X'], useUTCTime);
+                    outString += this.strftime(extDate.local['X'], useUTC);
                     break;
                 case 'y': // 2 digit year
                     year = realFullYear.toString();

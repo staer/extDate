@@ -68,7 +68,8 @@ var extDate = {
     local: {
         'x': '%m/%d/%y',                // Localized date display
         'X': '%H:%M:%S',                // Localized time display
-        'c': '%a %b %d %H:%M:%S %Y'     // Localized date/time display
+        'c': '%a %b %d %H:%M:%S %Y',    // Localized date/time display
+        'p': ['AM', 'PM']               // localizations for AM/PM
     },
     
     expressions: {
@@ -169,9 +170,9 @@ if(typeof Date.prototype.strftime !== 'function') {
                     break;
                 case 'p': // AM vs PM
                     if(this.getHours() < 12) {
-                        outString += "AM";
+                        outString += extDate.local['p'][0];
                     } else {
-                        outString += "PM";
+                        outString += extDate.local['p'][1];
                     }
                     break;
                 case 'S': // Second as number 0-59

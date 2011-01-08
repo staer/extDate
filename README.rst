@@ -5,7 +5,8 @@ extDate is a set of extensions regarding the JavaScript Date object, adding in s
 
 * Date.isLeapYear(): check to see if the date occurs on a leap year
 * Date.strftime(): Output the date in a variety of formats (similar to Python strftime)
-* A Date.strptime(): Parse a string into a valid Date object
+* Date.strptime(): Parse a string into a valid Date object
+* String.strptime(): Wrapper around Date.strptime() for convenient use in Strings
 * Helper constants to make creating new Date objects easier
 * Easy localization: Easily make the module work in languages other than English
 
@@ -51,6 +52,17 @@ This method parses on a string based on the format parameter and returns a Date 
     Date.strptime("1/1/2011", "%m/%d/%Y");   // returns Date(2011,0,1);
 
 The format strings are directives that can be used are roughly the same as those available in Python's strptime() implementation. See http://www.strftime.org or http://docs.python.org/library/time.html#time.strftime for more information.
+
+String.strptime(format)
+-----------------------
+
+This method is a thin-wrapper around Date.strptime() which adds strptime functionality to String objects just to make things easier code-wise. For example::
+
+	var d = Date.strptime("1/1/2011", "%m/%d/%Y");
+	// becomes....
+	var d = "1/1/2011".strptime("%m/%d/%Y");
+
+All format parameters available to Date.strptime() are available to String.strptime().
 
 Helpers
 -------

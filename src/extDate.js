@@ -389,9 +389,12 @@ if(typeof Date.strptime !== 'function') {
             parsedDate.setDate(day);
         }
         
-        
-        
-        
         return parsedDate;
+    };
+}
+// String.strptime
+if(typeof String.prototype.strptime !== 'function') {
+    String.prototype.strptime = function(format) { 
+        return Date.strptime(this, format);
     };
 }

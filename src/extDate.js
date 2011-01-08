@@ -135,7 +135,7 @@ if(typeof Date.prototype.isLeapYear !== 'function') {
 // = Date.strftime() =
 // ===================
 if(typeof Date.prototype.strftime !== 'function') {
-    Date.prototype.strftime = function(format) {
+    Date.prototype.strftime = function(format, useUTCTime) {
         var year = null;        // variable used within the switch statement
         var month = null;       // variable used within the switch statement
         var hour = null;        // variable used within the switch statement
@@ -145,6 +145,26 @@ if(typeof Date.prototype.strftime !== 'function') {
         var outString = "";     // output string
         var remainingFormat = format;   // format string after being chopped up
         
+        var realDay = this.getDay();
+        var realMonth = this.getMonth();
+        var realDate = this.getDate();
+        var realHours = this.getHours();
+        var realMinutes = this.getMinutes();
+        var realSeconds = this.getSeconds();
+        var realFullYear = this.getFullYear(); 
+        
+        // If useUTCTime is set, then use the UTC values instead of whatever the
+        // local time zone is
+        if(useUTCTime) {
+            realDay = this.getUTCDay();
+            realMonth = this.getUTCMonth();
+            realDate = this.getUTCDate();
+            realHours = this.getUTCHours();
+            realMinutes = this.getUTCMinutes();
+            realSeconds = this.getUTCSeconds();
+            realFullYear = this.getUTCFullYear();
+        }
+        
         var index = remainingFormat.indexOf('%');
         while(index !== -1) {
             // get the directive character
@@ -152,33 +172,33 @@ if(typeof Date.prototype.strftime !== 'function') {
             outString += remainingFormat.substring(0,index);
             switch(directive) {
                 case 'a': // Abbreviated weekday name
-                    outString += extDate.days[this.getDay()][1];
+                    outString += extDate.days[realDay][1];
                     break;
                 case 'A': // Full weekday name
-                    outString += extDate.days[this.getDay()][0];
+                    outString += extDate.days[realDay][0];
                     break;
                 case 'b': // Abbreviated month name
-                    outString += extDate.months[this.getMonth()][1];
+                    outString += extDate.months[realMonth][1];
                     break;
                 case 'B': // Full month name
-                    outString += extDate.months[this.getMonth()][0];
+                    outString += extDate.months[realMonth][0];
                     break;
                 case 'c': // Locale's appropriate date/time representation
-                    outString += this.strftime(extDate.local['c']);
+                    outString += this.strftime(extDate.local['c'], useUTCTime);
                     break;
                 case 'd': // Day of month as decimal number 1-31
-                    outString += this.getDate();
+                    outString += realDate;
                     break;
                 case 'H': // Hour (24-hour clock) as decimal number 0-23
-                    outString += this.getHours();
+                    outString += realHours;
                     break;
                 case 'I': // Hour (12-hour clock) as decimal number 1-12
-                    hour = this.getHours() > 12 ? this.getHours()-12 : this.getHours();
+                    hour = realHours > 12 ? realHours-12 : realHours;
                     outString += hour;
                     break;
                 case 'j': // Day of year as a decimal number 1-366
                     days = 0;
-                    month = this.getMonth();
+                    month = realMonth;
                     for(var i=0; i< month; i++) {
                         days += extDate.months[i][2];
                         // if it's a leap year and feb, we need to add an extra day
@@ -186,14 +206,14 @@ if(typeof Date.prototype.strftime !== 'function') {
                             days += 1;
                         }
                     }
-                    days += this.getDate();
+                    days += realDate;
                     outString += days;
                     break;
                 case 'm': // Month as number 1-12
-                    outString += this.getMonth() + 1;
+                    outString += realMonth + 1;
                     break;
                 case 'M': // Minute 0-59
-                    outString += this.getMinutes();
+                    outString += realMinutes;
                     break;
                 case 'p': // AM vs PM
                     if(this.getHours() < 12) {
@@ -203,7 +223,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     }
                     break;
                 case 'S': // Second as number 0-59
-                    outString += this.getSeconds();
+                    outString += realSeconds;
                     break;
                 case 'U': // Week number of year starting on sunday
                     // A: Find the number of days from Jan 1st to the 1st sunday
@@ -211,12 +231,12 @@ if(typeof Date.prototype.strftime !== 'function') {
                     // Take the difference B-A and divide by 7
                     week = 0;
                     var days_til_sunday = 0;
-                    today = new Date(this.getFullYear(), extDate.JANUARY, 1);
+                    today = new Date(realFullYear, extDate.JANUARY, 1);
                     while(today.getDay() !== 0) {
                         today.setDate(today.getDate()+1);
                         days_til_sunday++;
                     }
-                    days = parseInt(this.strftime("%j"), 10);
+                    days = parseInt(this.strftime("%j", useUTCTime), 10);
                     // Only run the calculation if the day in question is after the
                     // first sunday of the year.
                     if(days > days_til_sunday) {
@@ -226,7 +246,7 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += week;
                     break;
                 case 'w': // Weekday as number 0-6
-                    outString += this.getDay();
+                    outString += realDay;
                     break;
                 case 'W': // Week number of year 0-53 starting on monday
                     // A: Find the number of days from Jan 1st to the 1st monday
@@ -234,12 +254,12 @@ if(typeof Date.prototype.strftime !== 'function') {
                     // Take the difference B-A and divide by 7
                     week = 0;
                     var days_til_monday = 0;
-                    today = new Date(this.getFullYear(), extDate.JANUARY, 1);
+                    today = new Date(realFullYear, extDate.JANUARY, 1);
                     while(today.getDay() !== 1) {
                         today.setDate(today.getDate()+1);
                         days_til_monday++;
                     }
-                    days = parseInt(this.strftime("%j"), 10);
+                    days = parseInt(this.strftime("%j", useUTCTime), 10);
                     // Only run the calculation if the day in question is after the
                     // first sunday of the year.
                     if(days > days_til_monday) {
@@ -249,17 +269,17 @@ if(typeof Date.prototype.strftime !== 'function') {
                     outString += week;
                     break;
                 case 'x': // Locale's appropriate date representation
-                    outString += this.strftime(extDate.local['x']);
+                    outString += this.strftime(extDate.local['x'], useUTCTime);
                     break;
                 case 'X': // Locale's appropriate time representation
-                    outString += this.strftime(extDate.local['X']);
+                    outString += this.strftime(extDate.local['X'], useUTCTime);
                     break;
                 case 'y': // 2 digit year
-                    year = this.getFullYear().toString();
+                    year = realFullYear.toString();
                     outString += year.substring(2);
                     break;
                 case 'Y': // 4 digit year
-                    outString += this.getFullYear();
+                    outString += realFullYear;
                     break;
                 case 'Z': // Time zone name
                     // NOTE: Not implelemented due to JS limitations w/ timezones

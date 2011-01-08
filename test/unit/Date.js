@@ -106,7 +106,7 @@ test("Tests for Date.isLeapYear()", function() {
 });
 
 test("Tests for Date.strptime()", function() {   
-    expect(27);
+    expect(36);
     
     // Tests for %Y directive
     deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
@@ -209,6 +209,41 @@ test("Tests for Date.strptime()", function() {
                 new Date(2001, extDate.DECEMBER, 25, 10, 15, 30, 0),
                 "Parse localized time string (%X)");
     // TODO: Localized date time string
+    
+    
+    // Test Week of year + day of week
+    // %W + %A/%a/%w
+    deepEqual(Date.strptime("Sunday week 37 of year 2010", "%A week %W of year %Y"),
+                new Date(2010, extDate.SEPTEMBER, 19, 0, 0, 0, 0),
+                "Parsed week of year (%W) and day of week (%A)");
+    deepEqual(Date.strptime("Day 0 of week 37 of year 2010", "Day %w of week %W of year %Y"),
+                new Date(2010, extDate.SEPTEMBER, 19, 0, 0, 0, 0),
+                "Parsed week of year (%W) and day of week (%w)");
+    deepEqual(Date.strptime("Sun of week 37 of year 2010", "%a of week %W of year %Y"),
+                new Date(2010, extDate.SEPTEMBER, 19, 0, 0, 0, 0),
+                "Parsed week of year (%W) and day of week (%a)");
+    // %U + %A/%a/%w
+    deepEqual(Date.strptime("Sunday week 37 of year 2010", "%A week %U of year %Y"),
+                new Date(2010, extDate.SEPTEMBER, 12, 0, 0, 0, 0),
+                "Parsed week of year (%U) and day of week (%A)");
+    deepEqual(Date.strptime("Day 0 of week 37 of year 2010", "Day %w of week %U of year %Y"),
+                new Date(2010, extDate.SEPTEMBER, 12, 0, 0, 0, 0),
+                "Parsed week of year (%U) and day of week (%w)");
+    deepEqual(Date.strptime("Sun of week 37 of year 2010", "%a of week %U of year %Y"),
+                new Date(2010, extDate.SEPTEMBER, 12, 0, 0, 0, 0),
+                "Parsed week of year (%U) and day of week (%a)");
+    deepEqual(Date.strptime("Sunday week 37 of year 1984", "%A week %U of year %Y"),
+                new Date(1984, extDate.SEPTEMBER, 9, 0, 0, 0, 0),
+                "Parsed week of year (%U) and day of week (%A) on a leap year"); 
+                
+    // Test week 0 parsing
+    deepEqual(Date.strptime("Saturday week 0 of 2010", "%A week %U of %Y"),
+                new Date(2010, extDate.JANUARY, 2, 0, 0, 0, 0),
+                "Parse 0th week of year and day of week when it lands in the current year");
+    deepEqual(Date.strptime("Tuesday week 0 of 2010", "%A week %W of %Y"),
+                new Date(2009, extDate.DECEMBER, 29, 0, 0, 0, 0),
+                "Parse 0th week of year and day of week when it lands in the previous year");
+    
     
                     
     // For some reason QUnit's "raises" test doesn't appear to work properly

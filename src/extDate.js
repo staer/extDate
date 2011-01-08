@@ -34,6 +34,15 @@ var extDate = {
     NOVEMBER: 10,
     DECEMBER: 11,
     
+    // Days of the week helpers
+    SUNDAY: 0,
+    MONDAY: 1,
+    TUESDAY: 2,
+    WEDNESDAY: 3,
+    THURSDAY: 4,
+    FRIDAY: 5,
+    SATURDAY: 6,
+    
     // Information about each month keyed by month number:
     // Full name | Abbreviated Name | Days in month (non-leap year)
     months: {
@@ -81,17 +90,22 @@ var extDate = {
         'M': /^[0-5]\d|\d/,             // Minute 00-59
         'S': /^[0-5]\d|\d/,             // Seconds 00-59 (not we do not support leap seconds)
         'y': /^\d\d/,                   // 2-digit year
+        'I': /^1[0-2]|0[1-9]|[1-9]| [1-9]/,      // 12 hour clock
+        'j': /^36[0-6]|3[0-5]\d|[1-2]\d\d|0[1-9]\d|00[1-9]|[1-9]\d|0[1-9]|[1-9]/, // day of year 1-366
+        'w': /^[0-6]/,                           // Day of week 0-6
+        'W': /^5[0-3]|[0-4]\d|\d/,              // Week of year (monday starts week)
+        'U': /^5[0-3]|[0-4]\d|\d/,              // Week of year (sunday starts week)
         
         // NOTE: These need to be easily localized. Could rebuild them on-the fly when the function
         // is called...
         'B': /^January|February|March|April|May|June|July|August|September|October|November|December/,
         'b': /^Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/,
         'p': /^AM|PM/,
-        'I': /^1[0-2]|0[1-9]|[1-9]| [1-9]/,      // 12 hour clock
-        'j': /^36[0-6]|3[0-5]\d|[1-2]\d\d|0[1-9]\d|00[1-9]|[1-9]\d|0[1-9]|[1-9]/, // day of year 1-366
-        'w': /^[0-6]/,                           // Day of week 0-6
         'A': /^Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday/,        // Day of week long
         'a': /^Sun|Mon|Tue|Wed|Thu|Fri|Sat/         // Day of week abbreviated
+        
+        
+
     }
     
     
@@ -413,6 +427,16 @@ if(typeof Date.strptime !== 'function') {
             }
         }
         
+        if(matches['W'] || matches['U']) {
+            if(matches['W']) {
+                week_of_year = parseInt(matches['W'], 10);
+                week_starts_on = extDate.MONDAY;
+            } else {
+                week_of_year = parseInt(matches['U'], 10);
+                week_starts_on = extDate.SUNDAY;
+            }
+        }
+        
         // 12 hour clock
         if(matches['I']) {
             hour = parseInt(matches['I'], 10);
@@ -435,6 +459,73 @@ if(typeof Date.strptime !== 'function') {
             day = parseInt(matches['j'], 10);
             parsedDate.setDate(day);
         }
+        
+        // If we have a week of the year + day of the week + week_starts_on
+        // we can calculate the date they are talking about
+        if(week_of_year!==null && week_starts_on!==null && day_of_week!==null) {
+            var remaining_days = null;
+            var temp_date = new Date(year, extDate.JANUARY, 1);
+            var first_day_of_week_1 = 1;
+            year = parseInt(parsedDate.getFullYear(), 10);
+            
+            first_day_of_week_1 = 1;
+            temp_date = new Date(year, extDate.JANUARY, 1);
+            while(temp_date.getDay()!==week_starts_on) {
+                temp_date.setDate(temp_date.getDate()+1);
+                first_day_of_week_1++;
+            }
+            
+            if(week_of_year===0) {
+                // Week zero is a special case, if the day they pick isn't in
+                // the current year for week 0, we loop backwards to last year
+                // For example: Tuesday Week 0 of 2010 would come back as "12/29/2009"
+                // While Saturday Week 0 of 2010 would be "1/2/2010"
+                
+                // Figure out how many days to go back from the first day of week 1 to hit the day we want
+                var date_diff = 0;
+                if(week_starts_on==extDate.SUNDAY) {
+                    date_diff = Math.abs(day_of_week - 7);    
+                } else {
+                    // we mod by 7 to handle sunday (0th day of week)
+                    date_diff = Math.abs((day_of_week - 8) % 7);
+                }
+                
+                // See if the day lies in this year or last year
+                if(first_day_of_week_1 -  Math.abs(date_diff) >= 1) {
+                    parsedDate.setDate(first_day_of_week_1-date_diff);
+                } else {
+                    // We have to roll back from December 31st of last year a few days
+                    parsedDate.setFullYear(year-1);
+                    parsedDate.setMonth(extDate.DECEMBER);
+                    day = extDate.months[extDate.DECEMBER][2];
+                    day -= Math.abs((first_day_of_week_1 - date_diff));
+                    parsedDate.setDate(day);
+                }
+            } else {
+                remaining_days = first_day_of_week_1 + (week_of_year-1)*7;
+                
+                for(month=extDate.JANUARY;month<=extDate.DECEMBER;month++) {
+                    var days_in_month = extDate.months[month][2];
+                    // If it's a leap year and february we need to add an extra day
+                    if(parsedDate.isLeapYear() && month===extDate.FEBRUARY) {
+                        days_in_month += 1;
+                    }
+                    if(remaining_days-days_in_month > 0) {
+                        remaining_days -= days_in_month;
+                    } else {
+                        break;
+                    }
+                }
+                parsedDate.setMonth(month);
+                parsedDate.setDate(remaining_days);
+                
+                // Now that we have the correct month and beginning of the week
+                // we can loop through until we get the right day of week
+                while(parsedDate.getDay()!==day_of_week) {
+                    parsedDate.setDate(parsedDate.getDate()+1);
+                }
+            }
+        } 
         
         return parsedDate;
     };

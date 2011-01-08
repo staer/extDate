@@ -110,7 +110,7 @@ test("Tests for Date.isLeapYear()", function() {
 });
 
 test("Tests for Date.strptime()", function() {   
-    expect(39);
+    expect(40);
     
     // Tests for %Y directive
     deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
@@ -204,6 +204,11 @@ test("Tests for Date.strptime()", function() {
     deepEqual(Date.strptime("Today is day 274 of 2011.", "Today is day %j of %Y."),
                 new Date(2011, extDate.OCTOBER, 1, 0, 0, 0, 0),
                 "Parse day of year");
+                
+    // Test %j on a leap year
+    deepEqual(Date.strptime("Today is day 317 of 2008.", "Today is day %j of %Y."),
+                new Date(2008, extDate.NOVEMBER, 12, 0, 0, 0, 0),
+                "Parse day of year on leapyear");
                 
     // Test localized formats (%x, %X, %c)
     deepEqual(Date.strptime("It is now 12/25/01!", "It is now %x!"),

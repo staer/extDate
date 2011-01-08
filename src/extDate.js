@@ -310,6 +310,7 @@ if(typeof Date.strptime !== 'function') {
         var index = format.indexOf('%');
         var match = null;
         var matches = {};
+        var days_in_month = null;
         
         var year = null;
         var month = null;
@@ -483,9 +484,20 @@ if(typeof Date.strptime !== 'function') {
         }
         
         // day of year
-        // NOTE: This may not work, check unit tests!
         if(matches['j']) {
             day = parseInt(matches['j'], 10);
+            for(month=extDate.JANUARY;month<=extDate.DECEMBER;month++) {
+                days_in_month = extDate.months[month][2];
+                if(new Date(realFullYear, 0, 1).isLeapYear() && month===extDate.FEBRUARY) {
+                    days_in_month+=1;
+                }
+                if(day-days_in_month >= 1) {
+                    day-= days_in_month;
+                } else {
+                    break;
+                }
+            }
+            realMonth = month;
             realDate = day;
         }
         
@@ -534,7 +546,7 @@ if(typeof Date.strptime !== 'function') {
                 remaining_days = first_day_of_week_1 + (week_of_year-1)*7;
                 
                 for(month=extDate.JANUARY;month<=extDate.DECEMBER;month++) {
-                    var days_in_month = extDate.months[month][2];
+                    days_in_month = extDate.months[month][2];
                     // If it's a leap year and february we need to add an extra day
                     if(new Date(year, 0, 1).isLeapYear() && month===extDate.FEBRUARY) {
                         days_in_month += 1;

@@ -96,13 +96,13 @@ var extDate = {
         'W': /^5[0-3]|[0-4]\d|\d/,              // Week of year (monday starts week)
         'U': /^5[0-3]|[0-4]\d|\d/,              // Week of year (sunday starts week)
         
-        // NOTE: These need to be easily localized. Could rebuild them on-the fly when the function
-        // is called...
-        'B': /^January|February|March|April|May|June|July|August|September|October|November|December/,
-        'b': /^Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/,
-        'p': /^AM|PM/,
-        'A': /^Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday/,        // Day of week long
-        'a': /^Sun|Mon|Tue|Wed|Thu|Fri|Sat/         // Day of week abbreviated
+        // NOTE: These are nulled out for now, but the RegEx for each is built
+        // dynamically when it is needed. This is to allow for proper localization.
+        'B': null,
+        'b': null,
+        'p': null,
+        'A': null,       
+        'a': null
     }
 };
 
@@ -364,7 +364,48 @@ if(typeof Date.strptime !== 'function') {
                 throw new Error("'" + directive + "' is a bad directive in format '%" + directive + "'");
             } 
             
-            match = extDate.expressions[directive].exec(remainingString);
+            // Helper method which builds a regular expression from a dictionary 'obj'
+            // that has 'count' items which are arrays then using the 'index' item in
+            // the array
+            var build_re_from_obj = function(obj, count, index) {
+                var s = "";
+                
+                // if count wasn't specified grab the length of the object
+                if(!count) {
+                    count = obj.length;
+                }
+                for(var i=0;i<count;i++) {
+                    // TODO: We should escape the string before adding to the regex
+                    if(index!==null && index!==undefined) {
+                        s+=obj[i][index];
+                    } else {
+                        s+=obj[i];
+                    }
+                    if(i!==count-1) {
+                        s+="|";
+                    }
+                }
+                s = "^" + s;
+                return new RegExp(s);
+            };
+            
+            // Grab the regular expression from the settings
+            // Dynamically build a new RegEx if it one of the directives
+            // that has to be localized
+            var re = extDate.expressions[directive];
+            if(directive==='a') {
+                re = build_re_from_obj(extDate.days, 7, 1);
+            } else if(directive==='A') {
+                re = build_re_from_obj(extDate.days, 7, 0);
+            } else if(directive==='B') {
+                re = build_re_from_obj(extDate.months, 12, 0);
+            } else if(directive==='b') {
+                re = build_re_from_obj(extDate.months, 12, 1);
+            } else if(directive==='p') {
+                re = build_re_from_obj(extDate.local['p']);
+            }
+
+            match = re.exec(remainingString);
             if(match) {
                 matches[directive] = match[0];
                 remainingString = remainingString.substring(match[0].length);

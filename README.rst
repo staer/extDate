@@ -120,13 +120,13 @@ Examples
 If you wanted to localize the days of the week to Spanish you would do something like the following::
 
 	extDate.days = {
-		['Domingo', 'Dom'],     // Sunday
-		['Lunes', 'Lun'],       // Monday
-		['Martes', 'Mar'],      // Tuesday
-		['Miercoles', 'Mie'],   // Wednesday
-		['Jueves', 'Jue']       // Thursday
-		['Viernes', 'Vie'],     // Friday
-		['Sabado', 'Sab']       // Saturday        
+		0: ['Domingo', 'Dom'],     // Sunday
+		1: ['Lunes', 'Lun'],       // Monday
+		2: ['Martes', 'Mar'],      // Tuesday
+		3: ['Miercoles', 'Mie'],   // Wednesday
+		4: ['Jueves', 'Jue'],       // Thursday
+		5: ['Viernes', 'Vie'],     // Friday
+		6: ['Sabado', 'Sab']       // Saturday        
 	};
 
 To change the localized date string output you would do the following::

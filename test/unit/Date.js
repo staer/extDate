@@ -13,7 +13,7 @@ var d7 = new Date(2011, extDate.JANUARY, 1);                // Jan 1st
 
 module("Date");			
 test("Tests for Date.strftime()", function() {
-    expect(27);
+    expect(29);
 	
     equals(d.strftime('The year was %Y, it was sweet!'), 
 		    'The year was 1982, it was sweet!', "4 digit year");
@@ -95,6 +95,26 @@ test("Tests for Date.strftime()", function() {
     equals(d4.strftime("%x %X", true),
             "10/1/11 " + (d4.getHours()+d4.getTimezoneOffset()/60) +":15:30", 
             "Testing changing a local time to UTC");
+            
+            
+    // Test Localization
+    var english_days = extDate.days;
+    extDate.days = {
+        0: ['Domingo', 'Dom'],     // Sunday
+        1: ['Lunes', 'Lun'],       // Monday
+        2: ['Martes', 'Mar'],      // Tuesday
+        3: ['Miercoles', 'Mie'],   // Wednesday
+        4: ['Jueves', 'Jue'],       // Thursday
+        5: ['Viernes', 'Vie'],     // Friday
+        6: ['Sabado', 'Sab']       // Saturday        
+    };
+    equals(d3.strftime("1/4/2011 falls on a %A."),
+            "1/4/2011 falls on a Martes.", "Full day of week in spanish!");
+    equals(d3.strftime("1/4/2011 falls on a %a."), 
+            "1/4/2011 falls on a Mar.", "Abbreviated day of week");
+	
+    extDate.days = english_days;
+	
 });
 
 test("Tests for Date.isLeapYear()", function() {
@@ -114,7 +134,7 @@ test("Tests for Date.isLeapYear()", function() {
 });
 
 test("Tests for Date.strptime()", function() {   
-    expect(40);
+    expect(42);
     
     // Tests for %Y directive
     deepEqual(Date.strptime("It's 2010!", "It's %Y!"), 
@@ -272,6 +292,26 @@ test("Tests for Date.strptime()", function() {
     deepEqual(Date.strptime("2011-09-28T04:59:00Z", "%Y-%m-%dT%H:%M:%SZ", true),
                 new Date(2011, extDate.SEPTEMBER, 28, 4-timezonediff, 59, 0, 0),
                 "Parse a UTC date and check against local time");
+                
+    // Test the localization features
+    var english_days = extDate.days;
+    extDate.days = {
+		0: ['Domingo', 'Dom'],     // Sunday
+		1: ['Lunes', 'Lun'],       // Monday
+		2: ['Martes', 'Mar'],      // Tuesday
+		3: ['Miercoles', 'Mie'],   // Wednesday
+		4: ['Jueves', 'Jue'],       // Thursday
+		5: ['Viernes', 'Vie'],     // Friday
+		6: ['Sabado', 'Sab']       // Saturday        
+	};
+    deepEqual(Date.strptime("Domingo week 37 of year 2010", "%A week %U of year %Y"),
+                new Date(2010, extDate.SEPTEMBER, 12, 0, 0, 0, 0),
+                "Parsed week of year (%U) and day of week (%A) in Spanish!");
+    deepEqual(Date.strptime("Dom of week 37 of year 2010", "%a of week %U of year %Y"),
+                new Date(2010, extDate.SEPTEMBER, 12, 0, 0, 0, 0),
+                "Parsed week of year (%U) and day of week (%a) in Spanish!");
+
+    extDate.days = english_days;
     
     
                     

@@ -103,12 +103,7 @@ var extDate = {
         'p': /^AM|PM/,
         'A': /^Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday/,        // Day of week long
         'a': /^Sun|Mon|Tue|Wed|Thu|Fri|Sat/         // Day of week abbreviated
-        
-        
-
     }
-    
-    
 };
 
 // =====================
@@ -128,6 +123,16 @@ if(typeof Date.prototype.isLeapYear !== 'function') {
             isLeapYear = false;
         }
         return isLeapYear;
+    };
+}
+
+// =============================
+// = Date.isLeapYear() wrapper =
+// =============================
+if(typeof Date.isLeapYear !== 'function') {
+    Date.isLeapYear = function(year) {
+        var d = new Date(year, extDate.JANUARY, 1);
+        return d.isLeapYear();
     };
 }
 
@@ -488,7 +493,7 @@ if(typeof Date.strptime !== 'function') {
             day = parseInt(matches['j'], 10);
             for(month=extDate.JANUARY;month<=extDate.DECEMBER;month++) {
                 days_in_month = extDate.months[month][2];
-                if(new Date(realFullYear, 0, 1).isLeapYear() && month===extDate.FEBRUARY) {
+                if(Date.isLeapYear(realFullYear) && month===extDate.FEBRUARY) {
                     days_in_month+=1;
                 }
                 if(day-days_in_month >= 1) {
@@ -548,7 +553,7 @@ if(typeof Date.strptime !== 'function') {
                 for(month=extDate.JANUARY;month<=extDate.DECEMBER;month++) {
                     days_in_month = extDate.months[month][2];
                     // If it's a leap year and february we need to add an extra day
-                    if(new Date(year, 0, 1).isLeapYear() && month===extDate.FEBRUARY) {
+                    if(Date.isLeapYear(year) && month===extDate.FEBRUARY) {
                         days_in_month += 1;
                     }
                     if(remaining_days-days_in_month > 0) {

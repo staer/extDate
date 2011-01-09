@@ -98,7 +98,7 @@ test("Tests for Date.strftime()", function() {
 });
 
 test("Tests for Date.isLeapYear()", function() {
-    expect(4);
+    expect(6);
 	
 	equals(new Date(1600, extDate.JANUARY, 1).isLeapYear(), true, "1600 (leap year)");
 	
@@ -107,6 +107,10 @@ test("Tests for Date.isLeapYear()", function() {
 	equals(new Date(1984, extDate.JANUARY, 1).isLeapYear(), true, "1984 (leap year)");
 	
 	equals(new Date(2011, extDate.JANUARY, 1).isLeapYear(), false, "2011 (non leap year)");
+	
+	// Check a non-instantiated isLeapYear()
+	equals(Date.isLeapYear(1600), true, "Date.isLeapYear() wrapper for 1600 (leap year)");
+	equals(Date.isLeapYear(2011), false, "Date.isLeapYear() wrapper for 2011 (non leap year)");
 });
 
 test("Tests for Date.strptime()", function() {   

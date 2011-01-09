@@ -34,7 +34,15 @@ This method returns true/false if the date occurs on a leap year::
     var d = new Date(2011,0,1);   // January 1st, 2011
     d.isLeapYear();				  // Returns false
 
-Date.strftime(format)
+There is also a convenience wrapper method associated with the Date object itself to make code a bit cleaner at times. The method can be used as such::
+
+	if(Date.isLeapYear(2011)) {
+		// do something because it is a leap year
+	}
+	
+
+
+Date.strftime(format, useUTC)
 ---------------------
 
 This method returns a date string based on the format string passed in::
@@ -42,9 +50,15 @@ This method returns a date string based on the format string passed in::
     var d = new Date(2011, 0, 1);     // January 1st, 2011
     var s = d.strftime("%m/%d/%Y");   // 's' contains "1/1/2011"
 
-The format strings and directives that can be used are roughly the same as those available in Python, see http://www.strftime.org or http://docs.python.org/library/time.html#time.strftime for more information.
+The format strings and directives that can be used are roughly the same as those available in Python, see http://www.strftime.org or http://docs.python.org/library/time.html#time.strftime for more information. 
 
-Date.strptime(string, format)
+Note: The only directive that is not supported in this implementation is the timezone (%Z) directive as JavaScript date objects do not really support time zones.
+
+Note: The strings that are returned which represent numbers are always returned using the smallest number of digits possible. This differs from the Python implementation. For example if you were to use the '%d' directive to get the day of the month for August 8th, in Python you would get the string '08' while in the extDate implementation you get the string '8'. The reason for this is that the JavaScript 'parseInt()' function is a bit quirky in that if it is attempting to parse a string that begins with a zero it will assume that it is octal notation. Thus parseInt('08') will actually yield 0 instead of the expected 8.
+
+An optional parameter, 'useUTC' can be specified as true/false as to weather or not the date/time being displayed is in "local" time or "UTC" time.
+
+Date.strptime(string, format, useUTC)
 -----------------------
 
 This method parses on a string based on the format parameter and returns a Date object::
@@ -53,7 +67,9 @@ This method parses on a string based on the format parameter and returns a Date 
 
 The format strings are directives that can be used are roughly the same as those available in Python's strptime() implementation. See http://www.strftime.org or http://docs.python.org/library/time.html#time.strftime for more information.
 
-String.strptime(format)
+An optional parameter, 'useUTC' can be specified as true/false as to weather or not the date/time being parsed is in "local" time or "UTC" time.
+
+String.strptime(format, useUTC)
 -----------------------
 
 This method is a thin-wrapper around Date.strptime() which adds strptime functionality to String objects just to make things easier code-wise. For example::
@@ -63,6 +79,8 @@ This method is a thin-wrapper around Date.strptime() which adds strptime functio
 	var d = "1/1/2011".strptime("%m/%d/%Y");
 
 All format parameters available to Date.strptime() are available to String.strptime().
+
+An optional parameter, 'useUTC' can be specified as true/false as to weather or not the date/time being parsed is in "local" time or "UTC" time.
 
 Helpers
 -------
@@ -76,6 +94,12 @@ Which is somewhat un-intuitive. As such, extDate contains some constants to help
     var d = new Date(2011, extDate.JANUARY, 1);		// January 1st
     var d= new Date(2011, extDate.MARCH, 15);		// March 15th
     // etc...
+
+There are also helper constants for each of the days of the week as well since JavaScript treats these as 0-based as well::
+
+	var start_of_the_week = extDate.SUNDAY;
+	...
+	var end_of_the_week = extDate.SATURDAY;
 
 Localization
 ============
